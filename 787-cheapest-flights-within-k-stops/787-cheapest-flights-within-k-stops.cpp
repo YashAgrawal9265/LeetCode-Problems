@@ -34,16 +34,13 @@ public:
             for(auto [child,wt]: adj[curNode]){
                 int nextDist = curDist + wt;
                 int nextStop = curStop + 1;
-                if(nextDist < dist[child]){
+                if(nextDist < dist[child] || nextStop < stop[child]){
+                   
                     dist[child] = nextDist;
                     stop[child] = nextStop;
                     pq.push({nextDist,child,nextStop});
                 }
-                else if(nextStop < stop[child]){
-                    // dist[child] = nextDist;
-                    // stop[child] = nextStop;
-                    pq.push({nextDist,child,nextStop});
-                }
+                
             }
         }
         return -1;
