@@ -1,18 +1,17 @@
-class element{
+class ele{
 public:
-    int vertex;
-    int cost;
+    int price;
+    int node;
     int stops;
-    element(int vertex, int cost, int stops){
-        this->vertex = vertex;
-        this->cost = cost;
-        this->stops = stops;
+    ele(int a, int b, int c){
+        price = a;
+        node = b;
+        stops = c;
     }
-        
 };
 struct cmp{
-    bool operator()(element a, element b){
-        return a.cost > b.cost;
+    bool operator()(ele a, ele b){
+        return a.price > b.price;
     }
 };
 class Solution {
@@ -23,22 +22,31 @@ public:
             int u = it[0], v = it[1], wt = it[2];
             adj[u].push_back({v,wt});
         }
-        priority_queue<element, vector<element>, cmp> pq;
-        pq.push(element(src,0,0));
-        vector<int> Stops(n,INT_MAX);
+        vector<int> dist(n,INT_MAX), stop(n,INT_MAX);
+        priority_queue<ele,vector<ele>,cmp> pq;
+        pq.push(ele(0,src,0));
+        dist[src] = 0, stop[src] = 0;
         while(!pq.empty()){
-            element temp = pq.top();
+            auto [curDist, curNode, curStop] = pq.top();
             pq.pop();
-            if(temp.vertex == dst) return temp.cost;
-            if(Stops[temp.vertex] < temp.stops) continue;
-            Stops[temp.vertex] = temp.stops;
-            if(temp.stops > k) continue;
-            for(auto it: adj[temp.vertex]){
-                int child = it.first;
-                int wt = it.second;  
-                pq.push(element(child,wt+temp.cost,temp.stops+1)); 
+            if(curNode == dst) return curDist;
+            if(curStop > k) continue;
+            for(auto [child,wt]: adj[curNode]){
+                int nextDist = curDist + wt;
+                int nextStop = curStop + 1;
+                if(nextDist < dist[child]){
+                    dist[child] = nextDist;
+                    stop[child] = nextStop;
+                    pq.push({nextDist,child,nextStop});
+                }
+                else if(nextStop < stop[child]){
+                    // dist[child] = nextDist;
+                    // stop[child] = nextStop;
+                    pq.push({nextDist,child,nextStop});
+                }
             }
         }
         return -1;
+        
     }
 };
