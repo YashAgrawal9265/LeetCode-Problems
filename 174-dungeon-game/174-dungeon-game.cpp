@@ -19,7 +19,27 @@ public:
     }
     int calculateMinimumHP(vector<vector<int>>& mat) {
         int m = mat.size(), n = mat[0].size();
-        vector<vector<int>> dp(m, vector<int>(n, -1));
-        return solve(mat,0,0,m,n,dp);
+        vector<vector<int>> dp(m, vector<int>(n, 0));
+        for(int i=m-1;i>=0;i--){
+            for(int j=n-1;j>=0;j--){
+                if(i == m-1 and j == n-1){
+                    if(mat[i][j] <= 0) dp[i][j] = abs(mat[i][j]) + 1;
+                    else dp[i][j] = 1;
+                }
+                else{
+                   int down = 1e8;
+                    if(i+1 < m)
+                        down = dp[i+1][j];
+                    int right = 1e8;
+                    if(j+1 < n)
+                        right = dp[i][j+1];
+                    int result = mat[i][j] - min(right,down);
+                    if(result < 0) result = abs(result);
+                    else result = 1;
+                    dp[i][j] = result;  
+                }
+            }
+        } 
+        return dp[0][0];
     }
 };
