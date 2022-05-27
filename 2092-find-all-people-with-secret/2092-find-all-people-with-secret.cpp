@@ -19,6 +19,7 @@ public:
             auto [time,node] = pq.top();
             pq.pop();
             if(dist[node] < time) continue;
+            result.push_back(node);
             for(auto [child,wt]: adj[node]){
                 if(wt < dist[child] and time <= wt){
                     dist[child] = wt;
@@ -27,9 +28,9 @@ public:
                 
             }
         }
-        for(int i=0;i<n;i++){
-            if(dist[i] != INT_MAX) result.push_back(i);
-        }
+        // for(int i=0;i<n;i++){
+        //     if(dist[i] != INT_MAX) result.push_back(i);
+        // }
         return result;
     }
 };
