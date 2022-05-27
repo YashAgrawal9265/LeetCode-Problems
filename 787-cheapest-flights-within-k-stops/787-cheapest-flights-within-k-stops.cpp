@@ -34,7 +34,7 @@ public:
             for(auto [child,wt]: adj[curNode]){
                 int nextDist = curDist + wt;
                 int nextStop = curStop + 1;
-                if(nextDist < dist[child] || nextStop < stop[child]){
+                if(nextStop < stop[child] || nextDist < dist[child]){
                    
                     dist[child] = nextDist;
                     stop[child] = nextStop;
