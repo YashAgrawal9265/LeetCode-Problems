@@ -1,28 +1,37 @@
-struct cmp{
-    bool operator()(pair<int,int>& a, pair<int,int>& b){
-        if(a.first == b.first) return a.second < b.second;
-        return a.first < b.first;
-    }
-};
 class Solution {
 public:
     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
         int n = arr.size();
-        
-        // max-heap
-        priority_queue<pair<int,int>,vector<pair<int,int>>, cmp> pq;
-        
-        for(int i=0;i<n;i++){
-            pq.push({abs(arr[i]-x),arr[i]});
-            if(pq.size() > k) pq.pop();
+        int low = 0, high = n-1;
+        while(high - low > 1){
+            int mid = (high + low) >> 1;
+            if(arr[mid] <= x) low = mid;
+            else high = mid;
+        }  
+        int closestIdx;
+        if(arr[low] == x) closestIdx = low;
+        else if(arr[high] == x) closestIdx = high;
+        else{
+            if(abs(arr[low]-x) <= abs(arr[high] - x)){
+                closestIdx = low;
+            }
+            else{
+                closestIdx = high;
+            }
         }
-        
+        k--;
+        int left = closestIdx-1, right = closestIdx+1;
+        while(k > 0){
+            if(left < 0) right++;
+            else if(right >= n) left--;
+            else if(abs(arr[left]-x) <= abs(arr[right]-x)) left--;
+            else right++;
+            k--;
+        }
         vector<int> result;
-        while(!pq.empty()){
-            result.push_back(pq.top().second);
-            pq.pop();
+        for(int i=left+1;i<right;i++){
+            result.push_back(arr[i]);
         }
-        sort(result.begin(),result.end());
         return result;
     }
 };
