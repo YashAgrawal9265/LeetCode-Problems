@@ -5,8 +5,8 @@ public:
         int r = n-1;
         double result = 1;
         for(int i=1;i<=r;i++){
-            result = result * (totalPath-r+i)/i;
-            // result /= i;
+            result *= (totalPath-r+i);
+            result /= i;
         }
         return (int)result;
     }
