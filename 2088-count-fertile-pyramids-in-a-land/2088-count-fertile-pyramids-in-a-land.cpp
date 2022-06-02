@@ -6,8 +6,9 @@ public:
             else return -1;
         }
         if(grid[i][j] == 0) return -1;
-        if(dp[i][j] != -1) return dp[i][j];
         if(grid[i+1][j] == 0) return dp[i][j] = 0;
+        if(dp[i][j] != -1) return dp[i][j];
+        
         int left = -1;
         if(j-1 >= 0) left = solve(grid,i+1,j-1,m,n,dp);
         int right = -1;
