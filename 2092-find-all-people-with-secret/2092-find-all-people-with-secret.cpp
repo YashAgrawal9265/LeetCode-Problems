@@ -28,9 +28,6 @@ public:
                 
             }
         }
-        // for(int i=0;i<n;i++){
-        //     if(dist[i] != INT_MAX) result.push_back(i);
-        // }
         return result;
     }
 };
