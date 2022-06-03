@@ -5,15 +5,17 @@ public:
         for(auto it: nums){
             mp[it]++;
         }
-        vector<pair<int,int>> temp;
+        priority_queue<pair<int,int>,vector<pair<int,int>>, greater<pair<int,int>>> pq;
         for(auto it: mp){
-            temp.push_back({it.second,it.first});
+            pq.push({it.second,it.first});
+            if(pq.size() > k) pq.pop();
         }
-        sort(temp.begin(),temp.end(),greater<pair<int,int>>());
-        int idx = 0;
+        
+        
         vector<int> result;
         while(k--){
-            result.push_back(temp[idx++].second);
+            result.push_back(pq.top().second);
+            pq.pop();
         }
         return result;
     }
