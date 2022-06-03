@@ -1,31 +1,23 @@
 class Solution {
 public:
     vector<int> findEvenNumbers(vector<int>& digits) {
-        unordered_map<char,int> mp;
-        for(auto it: digits){
-            mp[it+'0']++;
-        }
+        int freq[10] = {0};
+        for(auto it: digits) freq[it]++;
         vector<int> result;
-        for(int i=100;i<=999;i++){
-            if(i % 2 == 0){
-                
-                string str = to_string(i);    
-                unordered_map<char,int> mp2;
-                mp2[str[0]]++;
-                mp2[str[1]]++;
-                mp2[str[2]]++;
-                bool flag = true;
-                for(auto &it: mp2){
-                    if(mp[it.first] < it.second){
-                        flag = false;
-                        break;
-                    }
-                }
-                if(flag){
-                    result.push_back(i);
+        for(int i=1;i<=9;i++){
+            if(freq[i] == 0) continue;
+            for(int j=0;j<=9;j++){
+                if(freq[j] == 0) continue;
+                else if(i == j and freq[j] < 2) continue;
+                for(int k=0;k<=8;k+=2){
+                    if(freq[k] == 0) continue;
+                    else if(i == j and j == k and freq[k] < 3) continue;
+                    else if(j == k and freq[k] < 2) continue;
+                    else if(i == k and freq[k] < 2) continue;
+                    
+                    result.push_back(i*100 + j*10 + k);
                 }
             }
-            
         }
         return result;
     }
