@@ -1,18 +1,22 @@
 class Solution {
 public:
-    int solve(int screenCount, int n, int copiedCharCount, bool canCopy){
-        if(screenCount > n) return 1e9;
-        if(screenCount == n) return 0;
-        
-        int copy = 1e9;
-        if(canCopy) 
-            copy = 1 + solve(screenCount,n,screenCount,false);
-        
-        int paste = 1 + solve(screenCount+copiedCharCount, n, copiedCharCount,true);
-        return min(copy,paste);
+    int solve(int screen, int n, int clipboard, int canCopy, vector<vector<int>>& dp){
+        if(screen > n) return 1e9;
+        if(screen == n) return 0;
+        if(dp[screen][clipboard] != -1) return dp[screen][clipboard];
+        int copy = 1e9, paste = 1e9;
+        if(clipboard == 0){
+            copy = 1 + solve(screen,n,screen,0,dp);
+            return dp[screen][clipboard] = min(copy,paste);
+        }
+        else{
+            if(screen != clipboard) copy = 1+ solve(screen,n,screen,0,dp);
+            paste = 1 + solve(screen+clipboard,n,clipboard,1,dp);
+            return dp[screen][clipboard] = min(copy,paste);
+        }
     }
     int minSteps(int n) {
-        if(n == 1) return 0;
-        return solve(0,n,1,false);
+        vector<vector<int>> dp(n+1, vector<int>(n+1,-1));
+        return solve(1,n,0,1,dp);
     }
 };
