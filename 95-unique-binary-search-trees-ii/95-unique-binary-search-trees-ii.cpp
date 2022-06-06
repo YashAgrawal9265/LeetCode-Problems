@@ -19,9 +19,8 @@ public:
         for(int i=st;i<=en;i++){
             vector<TreeNode*> leftTree = helper(st,i-1);
             vector<TreeNode*> rightTree = helper(i+1,en);
-            
-            for(auto l: leftTree){
-                for(auto r: rightTree){
+            for(auto &l: leftTree){
+                for(auto &r: rightTree){
                     TreeNode* root = new TreeNode(i);
                     root->left = l;
                     root->right = r;
