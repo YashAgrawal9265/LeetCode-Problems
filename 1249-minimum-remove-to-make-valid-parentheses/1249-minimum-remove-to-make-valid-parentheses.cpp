@@ -2,25 +2,21 @@ class Solution {
 public:
     string minRemoveToMakeValid(string str) {
         int n = str.size();
-        stack<char> st;
-        int open = 0;
+        stack<int> st;
         for(int i=0;i<n;i++){
-            if(str[i] == ')' and open <= 0) continue;
-            if(str[i] == '(') open++;
-            else if(str[i] == ')') open--;
-            st.push(str[i]);
+            if(str[i] == '(') st.push(i);
+            else if(str[i] == ')'){
+                if(!st.empty() and str[st.top()] == '(') st.pop();
+                else st.push(i);
+            }
         }
-        int close = 0;
         string result = "";
-        while(!st.empty()){
-            if(st.top() == ')') close++;
-            if(st.top() == '(' and close <= 0){
+        for(int i=n-1;i>=0;i--){
+            if(!st.empty() and i == st.top()){
                 st.pop();
                 continue;
             }
-            if(st.top() == '(') close--;
-            result += st.top();
-            st.pop();
+            result += str[i];
         }
         reverse(result.begin(),result.end());
         return result;
