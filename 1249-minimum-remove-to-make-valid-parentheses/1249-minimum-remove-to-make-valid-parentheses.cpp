@@ -10,15 +10,11 @@ public:
                 else st.push(i);
             }
         }
-        string result = "";
-        for(int i=n-1;i>=0;i--){
-            if(!st.empty() and i == st.top()){
-                st.pop();
-                continue;
-            }
-            result += str[i];
+        while(!st.empty()){
+            str.erase(st.top(),1);
+            st.pop();
         }
-        reverse(result.begin(),result.end());
-        return result;
+        
+        return str;
     }
 };
