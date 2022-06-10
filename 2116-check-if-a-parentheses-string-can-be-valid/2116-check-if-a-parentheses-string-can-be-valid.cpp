@@ -19,6 +19,7 @@ public:
             else balance--;
             if(balance < 0) return false;
         }
+        
         return true;
     }
 };
