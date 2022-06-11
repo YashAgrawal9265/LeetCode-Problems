@@ -3,24 +3,26 @@ public:
     int minOperations(vector<int>& nums, int x) {
         int n = nums.size();
         int totSum = 0;
-        for(int i=0;i<n;i++){
-            totSum += nums[i];
-        }
-        if(totSum == x) return n;
+        for(auto it: nums) totSum += it;
         int target = totSum - x;
-        int right = 0, left = 0;
+        if(target == 0) return n;
+        unordered_map<int,int> mp;
         int sum = 0;
-        int result = -1;
-        while(right < n){
-            sum += nums[right];
-            while(sum > target and left < right){
-                sum -= nums[left];
-                left++;
+        int mxLen = -1;
+        for(int i=0;i<n;i++){
+            sum += nums[i];
+            if(sum == target){
+                mxLen = i+1;
+                
             }
-            if(sum == target) result = max(result,right-left+1);
-            right++;
+            if(mp.find(sum - target) != mp.end()){
+                mxLen = max(mxLen,i - mp[sum-target]);
+            }
+            mp[sum] = i;
+            
         }
-        if(result == -1) return -1;
-        return n - result;
+        
+        if(mxLen == -1) return -1;
+        return n - mxLen;
     }
 };
