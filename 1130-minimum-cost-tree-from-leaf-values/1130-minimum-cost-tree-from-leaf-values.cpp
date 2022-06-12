@@ -1,30 +1,32 @@
 class Solution {
 public:
-    // first = maximum leaf value
-    // second = total sum of non-leaf values
-    pair<int,int> solve(vector<int>& arr, int st, int en,map<pair<int,int>,pair<int,int>>& dp){
-        if(st == en){
-            return {arr[st],0};
-        }
-        if(dp.find({st,en}) != dp.end()) return dp[{st,en}];
-        int mini = INT_MAX;
-        pair<int,int> temp;
-        for(int i=st;i<en;i++){
-            pair<int,int> left = solve(arr,st,i,dp);
-            pair<int,int> right = solve(arr,i+1,en,dp);
-            int totSum = (left.first*right.first) + left.second + right.second;
-            if(totSum < mini){
-                temp.first = max(left.first,right.first);
-                temp.second = totSum;
-                mini = totSum;
-            }
-        }
-        return dp[{st,en}] = temp;
-        
-    }
     int mctFromLeafValues(vector<int>& arr) {
         int n = arr.size();
-        map<pair<int,int>,pair<int,int>> dp;
-        return solve(arr,0,n-1,dp).second;
+        int res = 0;
+        while(n != 1){
+           
+            int minVal = INT_MAX;
+            int minIdx;
+            vector<int>::iterator minPtr;
+            int idx = 0;
+            for(auto it = arr.begin(); it != arr.end(); it++){
+                if(*it < minVal){
+                    minIdx = idx;
+                    minVal = *it;
+                    minPtr = it;
+                }
+                idx++;
+            }
+            // cout<<minVal<<endl;
+            if(minIdx > 0 and minIdx < n-1) res += (minVal*(min(arr[minIdx-1],arr[minIdx+1])));
+            else if(minIdx == 0) res += (minVal*arr[minIdx+1]);
+            else{
+                res += (minVal*arr[minIdx-1]);
+            }
+            
+            n--;
+            arr.erase(minPtr);
+        }
+        return res;
     }
 };
