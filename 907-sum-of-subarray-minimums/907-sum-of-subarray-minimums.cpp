@@ -9,7 +9,7 @@ public:
         stack<int> st;
         long long result = 0;
         for(int i=0;i<=n;i++){
-            while(!st.empty() and (i == n || nums[st.top()] >= nums[i])){
+            while(!st.empty() and (i == n || nums[st.top()] > nums[i])){
                 int idx = st.top();
                 int right = i - idx;
                 int val = nums[idx];
