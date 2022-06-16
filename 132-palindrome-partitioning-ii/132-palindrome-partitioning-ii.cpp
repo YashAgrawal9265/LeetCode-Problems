@@ -1,7 +1,7 @@
 class Solution {
 public:
     int solve(string& str, int i, int n, vector<vector<int>>& pdp, vector<int>& dp){
-        if(i == n) return 0;
+        if(i == n) return -1;
         if(dp[i] != -1) return dp[i];
         int mnPart = INT_MAX;
         for(int k=i;k<n;k++){
@@ -36,7 +36,7 @@ public:
             }
         }
         vector<int> dp(n+1,-1);
-        return solve(str,0,n,pdp,dp) - 1;
+        return solve(str,0,n,pdp,dp);
         
     }
 };
