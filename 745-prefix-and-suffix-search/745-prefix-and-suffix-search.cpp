@@ -1,25 +1,32 @@
 class WordFilter {
-   private:
-    unordered_map<string, int> hashMap;
-
-   public:
+private:
+    unordered_map<string,int> mp;
+public:
     WordFilter(vector<string>& words) {
-        int n = words.size();
-        for (int i = 0; i < n; i++) {
-            string word = words[i];
-            int wordSize = word.size();
-            for (int j = 1; j <= wordSize; j++) {
-                string p = word.substr(0, j);
-                for (int k = 0; k < wordSize; k++) {
-                    string s = word.substr(k, wordSize);
-                    hashMap[p + "|" + s] = i + 1;
+        int idx = 0;
+        for(auto &it: words){
+            int n = it.size();
+            string str = it;
+            for(int i=0;i<n;i++){
+                string pre = str.substr(0,i+1);
+                for(int j=n-1;j>=0;j--){
+                    string suf = str.substr(j);
+                    mp[pre + "#" + suf] = idx;
                 }
             }
+            idx++;
         }
     }
-
+    
     int f(string prefix, string suffix) {
-        string s = prefix + "|" + suffix;
-        return hashMap[s] - 1;
+        string temp = prefix + "#" + suffix;
+        if(mp.find(temp) == mp.end()) return -1;
+        return mp[temp];
     }
 };
+
+/**
+ * Your WordFilter object will be instantiated and called as such:
+ * WordFilter* obj = new WordFilter(words);
+ * int param_1 = obj->f(prefix,suffix);
+ */
