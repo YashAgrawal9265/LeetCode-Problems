@@ -7,20 +7,19 @@ public:
         for(i=0;i<n-1;i++){
             if(heights[i] >= heights[i+1]) continue;
             int diff = heights[i+1]-heights[i];
-            if(bricks >= diff){
-                pq.push(diff);
+            if(diff <= bricks){
                 bricks -= diff;
+                pq.push(diff);
             }
-            else if(ladders > 0){
-                if(!pq.empty() and diff < pq.top()){
-                    bricks += (pq.top()-diff);
+            else{
+                if(ladders == 0) break;
+                if(!pq.empty() and pq.top() > diff){
+                    int prev_bricks = pq.top();
                     pq.pop();
+                    bricks += (prev_bricks - diff);
                     pq.push(diff);
                 }
                 ladders--;
-            }
-            else{
-                break;
             }
         }
         return i;
