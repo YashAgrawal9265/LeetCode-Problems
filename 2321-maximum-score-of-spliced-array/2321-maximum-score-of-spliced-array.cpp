@@ -22,8 +22,8 @@ public:
             arr1[i] = nums2[i] - nums1[i];
             arr2[i] = nums1[i] - nums2[i];
         }
-        int first = max(s1 + kadane(arr1),s2 - kadane(arr1));
-        int second = max(s1 - kadane(arr2), s2 + kadane(arr2));
+        int first = s1 + kadane(arr1);
+        int second = s2 + kadane(arr2);
         return max(first,second);
         
     }
