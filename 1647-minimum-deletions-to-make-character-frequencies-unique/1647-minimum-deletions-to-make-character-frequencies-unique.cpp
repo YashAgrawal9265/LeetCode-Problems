@@ -12,17 +12,19 @@ public:
             if(mp[i] != 0)
                 freq.push_back(mp[i]);
         }
-        
-        unordered_set<int> st;
         int count = 0;
-        n = freq.size();
-        for(int i=0;i<n;i++){
-           while(freq[i] and st.find(freq[i]) != st.end()){
-               freq[i]--;
-               count++;
-           }
-           if(freq[i]) st.insert(freq[i]);
-            
+        sort(freq.begin(),freq.end(),greater<int>());
+        int allowed_freq = freq[0];
+        for(int i=0;i<freq.size();i++){
+            if(freq[i] > allowed_freq){
+                if(allowed_freq >= 0){
+                    count += (freq[i] - allowed_freq);
+                }
+                else{
+                    count += freq[i];
+                }
+            }
+            allowed_freq = min(freq[i]-1,allowed_freq-1);
         }
         return count;
     }
