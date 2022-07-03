@@ -1,21 +1,22 @@
 class Solution {
 public:
-    int wiggleMaxLength(vector<int>& arr) {
-        int n = arr.size();
+    int wiggleMaxLength(vector<int>& nums) {
+        int n = nums.size();
         vector<int> greater(n,1), smaller(n,1);
-        int result = 1;
         for(int i=1;i<n;i++){
-            for(int prev = 0; prev < i; prev++){
-                if(arr[i] > arr[prev]){
-                    greater[i] = max(greater[i],1+smaller[prev]);
-                }
-                else if(arr[i] < arr[prev]){
-                    smaller[i] = max(smaller[i],1+greater[prev]);
-                }
+            if(nums[i] > nums[i-1]){
+                greater[i] = 1 + smaller[i-1];
+                smaller[i] = smaller[i-1];
             }
-            result = max(smaller[i],greater[i]);
+            else if(nums[i] < nums[i-1]){
+                smaller[i] = 1 + greater[i-1];
+                greater[i] = greater[i-1];
+            }
+            else{
+                smaller[i] = smaller[i-1];
+                greater[i] = greater[i-1];
+            }
         }
-        
-        return result;
+        return max(smaller[n-1],greater[n-1]);
     }
 };
