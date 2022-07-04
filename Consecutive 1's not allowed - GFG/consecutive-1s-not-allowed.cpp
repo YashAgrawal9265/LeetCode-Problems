@@ -9,7 +9,7 @@ using namespace std;
 class Solution{
 public:
     int mod = 1e9 + 7;
-    long long dp[100009][2];
+    
 // 	long long solve(int n, bool one){
 // 	    if(n == 0){
 // 	        return 1;
@@ -23,19 +23,21 @@ public:
 // 	    return dp[n][one] = (pick + nopick) % mod;
 // 	}
 	ll countStrings(int n) {
-	    memset(dp,0,sizeof(dp));
-	    dp[0][0] = 1, dp[0][1] = 1;
+	    
+	    vector<int> dp(2,1), cur(2);
+	    
 	    for(int i=1;i<=n;i++){
 	        for(int one = 0; one <=1; one++){
 	            long long pick = 0;
         	    if(one){
-        	        pick = dp[i-1][0] % mod;
+        	        pick = dp[0] % mod;
         	    }
-        	    long long nopick = dp[i-1][1] % mod;
-        	    dp[i][one] = (pick + nopick) % mod;
+        	    long long nopick = dp[1] % mod;
+        	    cur[one] = (pick + nopick) % mod;
 	        }
+	        dp = cur;
 	    }
-	    return dp[n][1];
+	    return dp[1];
 	}
 };
 
