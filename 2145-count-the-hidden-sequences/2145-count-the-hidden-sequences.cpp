@@ -1,25 +1,16 @@
 class Solution {
 public:
     int numberOfArrays(vector<int>& arr, int lower, int upper) {
-        int count = 0;
-        int maxi;
-        for(int i=lower;i<=upper;i++){
-            bool flag = true;
-            int x = i;
-            maxi = i;
-            for(int j=0;j<arr.size();j++){
-                if(x + arr[j] < lower || x + arr[j] > upper){
-                    flag = false;
-                    break;
-                }
-                x = x + arr[j];
-                maxi = max(maxi,x);
-            }
-            if(flag){
-                return upper - maxi + 1;
-            }
+        long  mini = lower;
+        long maxi = lower;
+        long x = lower;
+        for(int i=0;i<arr.size();i++){
+            x += arr[i];
+            mini = min(x,mini);
+            maxi = max(x,maxi);
         }
-        // cout<<maxi<<endl;
-        return 0;
+        long ans = upper - lower - (maxi - mini) + 1;
+        if(ans < 0) ans = 0;
+        return ans;
     }
 };
