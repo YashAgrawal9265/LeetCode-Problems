@@ -1,28 +1,29 @@
 class Solution {
 private:
-    bool solve(string& s1, string& s2, string& s3, int i, int j, int k,vector<vector<int>>& dp){
-        if(k == 0) return 1;
-        if(i == 0 and j == 0) return 0;
-        if(dp[i][j] != -1) return dp[i][j];
-        int result = 0;
-        if(i-1 >= 0 and j-1 >= 0 and s3[k-1] == s2[j-1] and s3[k-1] == s1[i-1]){
-            result = solve(s1,s2,s3,i-1,j,k-1,dp) or solve(s1,s2,s3,i,j-1,k-1,dp);
-        }
-        else if(j-1 >= 0 and s3[k-1] == s2[j-1]){
-            result = solve(s1,s2,s3,i,j-1,k-1,dp);
-        }
-        else if(i-1 >= 0 and s3[k-1] == s1[i-1]){
-            result = solve(s1,s2,s3,i-1,j,k-1,dp);
-        }
-        return dp[i][j] = result;
-        
-    }
 public:
     bool isInterleave(string s1, string s2, string s3) {
-        int a = s1.size(), b = s2.size(), c = s3.size(); 
-        if(a + b  != c) return false;
-        vector<vector<int>> dp(a+1,vector<int>(b+1,-1));
-        // vector<vector<vector<int>>> dp(a+1,vector<vector<int>>(b+1,vector<int>(c+1,-1)));
-        return solve(s1,s2,s3,a,b,c,dp);
+        int m = s1.size(), n = s2.size();
+        if(m + n  != s3.size()) return false;
+        vector<int> prev(n+1,0), cur(n+1,0);
+        prev[0] = 1;
+        cur[0] = 1;
+        for(int i=0;i<=m;i++){
+            for(int j=0;j<=n;j++){
+                if(i == 0 and j == 0) continue;
+                int result = 0;
+                if(i-1 >= 0 and j-1 >= 0 and s3[i+j-1] == s2[j-1] and s3[i+j-1] == s1[i-1]){
+                    result = prev[j] or cur[j-1];
+                }
+                else if(j-1 >= 0 and s3[i+j-1] == s2[j-1]){
+                    result = cur[j-1];
+                }
+                else if(i-1 >= 0 and s3[i+j-1] == s1[i-1]){
+                    result = prev[j];
+                }
+                cur[j] = result;
+            }
+            prev = cur;
+        }
+        return prev[n];
     }
 };
