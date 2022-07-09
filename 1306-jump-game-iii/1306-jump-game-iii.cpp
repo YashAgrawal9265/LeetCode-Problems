@@ -10,7 +10,6 @@ public:
             else new_idx = idx - arr[idx];
             if(new_idx >= 0 and new_idx < n and !vis[new_idx]){
                 result = result or solve(arr,vis,new_idx,n);
-                if(result) break;
             }
         }
         return result;
