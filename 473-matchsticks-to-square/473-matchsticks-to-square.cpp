@@ -1,32 +1,38 @@
 class Solution {
-    bool dfs(vector<int> &sidesLength,const vector<int> &matches, int index, const int target) {
-        if (index == matches.size())
-            return sidesLength[0] == sidesLength[1] && sidesLength[1] == sidesLength[2] && sidesLength[2] == sidesLength[3];
-        for (int i = 0; i < 4; ++i) {
-            if (sidesLength[i] + matches[index] > target) // first
-                continue;
-            int j = i;
-            while (--j >= 0) // third
-                if (sidesLength[i] == sidesLength[j]) 
-                    break;
-            if (j != -1) continue;
-            sidesLength[i] += matches[index];
-            if (dfs(sidesLength, matches, index + 1, target))
-                return true;
-            sidesLength[i] -= matches[index];
-        }
-        return false;
-    }
+private:
+    unordered_map<int,bool> dp;
 public:
-    bool makesquare(vector<int>& nums) {
-        if (nums.size() < 4) return false;
-        int sum = 0;
-        for (const int val: nums) {
-            sum += val;
+    bool solve(vector<int>& arr, int& vis, int idx, int target, int sideLength, int sides){
+        if(sides == 0) return true;
+        if(target == 0){
+            return dp[vis] = solve(arr,vis,0,sideLength,sideLength,sides-1);
         }
-        if (sum % 4 != 0) return false;
-        sort(nums.begin(), nums.end(), [](const int &l, const int &r){return l > r;}); // second
-        vector<int> sidesLength(4, 0);
-        return dfs(sidesLength, nums, 0, sum / 4);
+        if(dp.find(vis) != dp.end()) return dp[vis];
+        for(int i=idx;i<arr.size();i++){
+           if(!(vis & (1 << i))){
+                if(arr[i] <= target){
+                    vis |= (1 << i);
+                    if(solve(arr,vis,i+1,target-arr[i],sideLength,sides)){
+                        return dp[vis] = true;
+                    }
+                    vis &= ~(1 << i);
+                }
+               else{
+                   break;
+               }
+           }
+        }
+        
+        return dp[vis] = false;
+    }
+    bool makesquare(vector<int>& arr) {
+        dp.clear();
+        int n = arr.size();
+        int sum = 0;
+        sort(arr.begin(),arr.end());
+        for(auto it: arr) sum += it;
+        if(sum % 4 != 0 or n == 0) return false;
+        int vis = 0;
+        return solve(arr,vis,0,sum/4,sum/4,4);
     }
 };
