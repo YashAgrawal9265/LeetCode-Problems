@@ -9,35 +9,36 @@
  * };
  */
 class Solution {
-private:
-    ListNode* reverse(ListNode* node, ListNode* right){
-        if(node == right) return right;
-        ListNode* head = reverse(node->next,right);
-        node->next->next = node;
-        node->next = NULL;
-        return head;
-    }
 public:
-    ListNode* reverseBetween(ListNode* head, int l, int r) {
-        if(!head or !head->next) return head;
-        ListNode* left = NULL, *left_prev = NULL;
-        ListNode* right = NULL, *right_next = NULL;
-        ListNode* node = head;
-        while(node){
-            if(l == 2) left_prev = node;
-            if(l == 1) left = node;
-            if(r == 1) right = node;
-            node = node->next;
-            l--,r--;
+    ListNode* reverse(ListNode* head, int left, int right){
+        int k = right - left + 1;
+        ListNode* pre = NULL, *cur = head, *nex;
+        int count = 0;
+        while(cur and count < k){
+            nex = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = nex;
+            count++;
         }
-        if(!left or !right) return head;
-        right_next = right->next;
-        ListNode* temp = reverse(left,right);
-       
-        if(left_prev) left_prev->next = temp;
-        left->next = right_next;
-
-        if(left == head) return temp;
+        head->next = cur;
+        return pre;
+        
+        
+    }
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        
+        if(left == 1){
+            return reverse(head,left,right);
+        }
+        ListNode* cur = head, *pre = NULL;
+        int count = 0;
+        while(cur and count < left-1){
+            pre = cur;
+            cur = cur->next;
+            count++;
+        }
+        pre->next = reverse(cur,left,right);
         return head;
     }
 };
