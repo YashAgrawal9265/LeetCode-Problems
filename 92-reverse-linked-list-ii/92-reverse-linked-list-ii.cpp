@@ -11,34 +11,33 @@
 class Solution {
 public:
     ListNode* reverse(ListNode* head, int left, int right){
-        int k = right - left + 1;
-        ListNode* pre = NULL, *cur = head, *nex;
+        ListNode* prev = NULL, *cur = head, *nex;
         int count = 0;
-        while(cur and count < k){
+        while(cur and count < right - left + 1){
             nex = cur->next;
-            cur->next = pre;
-            pre = cur;
+            cur->next = prev;
+            prev = cur;
             cur = nex;
             count++;
         }
         head->next = cur;
-        return pre;
-        
-        
+        return prev;
     }
     ListNode* reverseBetween(ListNode* head, int left, int right) {
-        
-        if(left == 1){
-            return reverse(head,left,right);
-        }
-        ListNode* cur = head, *pre = NULL;
+        if(!head or !head->next) return head;
+        ListNode* prev = NULL, *cur = head;
         int count = 0;
         while(cur and count < left-1){
-            pre = cur;
+            prev = cur;
             cur = cur->next;
             count++;
         }
-        pre->next = reverse(cur,left,right);
-        return head;
+        if(prev){
+            prev->next = reverse(cur,left,right);
+            return head;
+        }
+        else{
+            return reverse(cur,left,right);
+        }
     }
 };
