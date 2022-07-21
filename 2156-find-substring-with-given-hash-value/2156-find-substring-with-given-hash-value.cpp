@@ -6,14 +6,13 @@ private:
 public:
     string subStrHash(string str, int p, int mod, int k, int hashValue) {
         int n = str.size();
-        long long hash = val(str[n-1]);
+        long long hash = 0;
         int pk = 1;
-        int idx = n-1;
-        for(int i = n-2;i>=0;i--){
-            // cout<<i<<endl;
+        int idx;
+        for(int i = n-1;i>=0;i--){
+            if(i + k > n) pk = (1LL*pk * p) % mod;
             if(i + k >= n){
                 hash = ((hash*p)%mod + val(str[i])) % mod;
-                pk = (1LL*pk * p) % mod;
             }
             else{
                 hash = (hash - (1LL*val(str[i+k])*pk)%mod)%mod;
