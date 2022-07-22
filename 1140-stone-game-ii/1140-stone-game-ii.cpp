@@ -1,32 +1,23 @@
 class Solution {
 public:
-    int dp[105][105][2];
-    int solve(vector<int>& piles, int idx, int M, int turn, int n){
+    int dp[105][105];
+    int solve(vector<int>& piles, int idx, int M, int n){
         if(idx >= n) return 0;
-        
-        if(dp[idx][M][turn] != -1) return dp[idx][M][turn];
-        // turn 0 = alice turn
-        // turn 1 = bob turn
+        if(dp[idx][M] != -1) return dp[idx][M];
         int sum = 0;
-        int mxScore;
-        
-        if(turn == 0) mxScore = 0;
-        else mxScore = 1e9;
-        
-        for(int i=0;i<2*M and idx+i<n; i++){
-            if(turn == 0){
-                sum += piles[idx+i];
-                mxScore = max(mxScore, sum + solve(piles,idx+i+1,max(i+1,M),1,n));
-            }
-            else{
-                mxScore = min(mxScore,solve(piles,idx+i+1,max(i+1,M),0,n));
-            }
+        int score = -1e8;
+        for(int i=0;i<2*M and idx+i<n;i++){
+            sum += piles[idx+i];
+            score = max(score,sum - solve(piles,idx+i+1,max(i+1,M),n));
         }
-        return dp[idx][M][turn] = mxScore;
+        return dp[idx][M] = score;
     }
     int stoneGameII(vector<int>& piles) {
-        int n = piles.size();
         memset(dp,-1,sizeof(dp));
-        return solve(piles,0,1,0,n);
+        int n = piles.size();
+        int scoreDiff = solve(piles,0,1,n);
+        int totScore = 0;
+        for(auto it: piles) totScore += it;
+        return (scoreDiff + totScore) / 2;
     }
 };
