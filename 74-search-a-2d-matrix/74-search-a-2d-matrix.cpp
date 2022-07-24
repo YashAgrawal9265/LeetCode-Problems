@@ -2,18 +2,18 @@ class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& mat, int target) {
         int m = mat.size(), n = mat[0].size();
-        int i = 0, j = n-1;
-        while(i < m and j >= 0){
-            if(target > mat[i][j]){
-                i++;
-            }
-            else if(target < mat[i][j]){
-                j--;
+        int low = 0, high = m*n - 1;
+        while(high - low > 1){
+            int mid = (low + high) >> 1;
+            if(mat[mid/n][mid%n] <= target){
+                low = mid;
             }
             else{
-                return true;
+                high = mid-1;
             }
         }
+        if(mat[low/n][low%n] == target) return true;
+        if(mat[high/n][high%n] == target) return true;
         return false;
     }
 };
