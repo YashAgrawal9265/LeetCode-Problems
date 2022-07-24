@@ -1,17 +1,16 @@
 class Solution {
 private:
-    int dp[100005];
-    bool solve(int n){
+    bool solve(int n, vector<int>& dp){
         if(dp[n] != -1) return dp[n];
         bool ans = false;
         for(int i=1;i*i<=n;i++){
-            ans = ans or !solve(n-(i*i));
+            ans = ans or !solve(n-(i*i),dp);
         }
         return dp[n] = ans;
     }
 public:
     bool winnerSquareGame(int n) {
-        memset(dp,-1,sizeof(dp));
-        return solve(n);
+        vector<int> dp(n+1,-1);
+        return solve(n,dp);
     }
 };
