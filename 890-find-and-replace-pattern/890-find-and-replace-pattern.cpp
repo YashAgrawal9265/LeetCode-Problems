@@ -12,10 +12,10 @@ public:
             bool flag = true;
             for(int i=0;i<pattern.size();i++){
                 if(pattToWord[val(pattern[i])] == -1 and wordToPat[val(word[i])] == -1 ){
-                    pattToWord[val(pattern[i])] = val(word[i]);
-                    wordToPat[val(word[i])] = val(pattern[i]);
+                    pattToWord[val(pattern[i])] = word[i];
+                    wordToPat[val(word[i])] = pattern[i];
                 }
-                else if(pattToWord[val(pattern[i])] == val(word[i]) and  wordToPat[val(word[i])] == val(pattern[i])){
+                else if(pattToWord[val(pattern[i])] == word[i] and  wordToPat[val(word[i])] == pattern[i]){
                     continue;
                 }
                 else{
