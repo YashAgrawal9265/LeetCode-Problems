@@ -22,8 +22,8 @@ public:
     }
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         int carry = 0;
-        ListNode* dummy = new ListNode(0);
-        ListNode* temp = dummy;
+        
+        ListNode* temp = nullptr;
         l1 = reverse(l1);
         l2 = reverse(l2);
         while(l1 or l2 or carry){
@@ -32,11 +32,11 @@ public:
             if(l2) sum += l2->val;
             ListNode* node = new ListNode(sum % 10);
             carry = sum / 10;
-            temp->next = node;
+            node->next = temp;
             temp = node;
             if(l1) l1 = l1->next;
             if(l2) l2 = l2->next;
         }
-        return reverse(dummy->next);
+        return temp;
     }
 };
