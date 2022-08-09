@@ -11,7 +11,7 @@ public:
             long long count = 0;
             for(int j=0;j<i;j++){
                 if(arr[i] % arr[j] == 0){
-                    count = (count + (mp[arr[j]] * mp[arr[i]/arr[j]]) % mod) % mod;
+                    count = (count + (mp[arr[j]] * mp[arr[i]/arr[j]])) % mod;
                 }
             }
             mp[arr[i]] += count;
