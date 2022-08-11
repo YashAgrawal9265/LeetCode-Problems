@@ -21,6 +21,7 @@ public:
     }
     void flatten(TreeNode* root) {
         TreeNode* prev = NULL;
-        return solve(root,prev);
+        solve(root,prev);
+        
     }
 };
