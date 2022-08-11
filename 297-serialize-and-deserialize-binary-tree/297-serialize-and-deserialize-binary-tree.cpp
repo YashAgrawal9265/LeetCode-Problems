@@ -12,23 +12,11 @@ public:
 
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
-        string result = "";
-        stack<TreeNode*> st;
-        TreeNode* cur = root;
-        while(!st.empty() or cur){
-            if(cur){
-                result += to_string(cur->val) + ' ';
-                st.push(cur);
-                cur = cur->left;
-            }
-            else{
-                result += "# ";
-                cur = st.top();
-                st.pop();
-                cur = cur->right;
-            }
-        }
-        return result;
+        if(!root) return "# ";
+        string str = to_string(root->val) + ' ';
+        str += serialize(root->left);
+        str += serialize(root->right);
+        return str;
     }
 
     // Decodes your encoded data to tree.
@@ -41,7 +29,6 @@ public:
         string word;
         getline(ss,word,' ');
         if(word == "#") return NULL;
-        if(word.size() == 0) return NULL;
         TreeNode* root = new TreeNode(stoi(word));
         root->left = solve(ss);
         root->right = solve(ss);
