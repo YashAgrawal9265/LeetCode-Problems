@@ -16,7 +16,29 @@ public:
         if(root->val > maxi or root->val < mini) return false;
         return solve(root->left,mini,1LL*root->val-1) and solve(root->right,1LL*root->val+1,maxi);
     }
+    void solve2(TreeNode* root, TreeNode*& prev, bool& ans){
+        if(!root) return;
+        solve2(root->left,prev,ans);
+        
+        if(!prev){
+            prev = root;
+           
+        }
+        else{
+            if(root->val <= prev->val){
+                ans = false;
+                return;
+            }
+            
+            prev = root;
+        }
+        solve2(root->right,prev,ans);
+    }
     bool isValidBST(TreeNode* root) {
-        return solve(root,INT_MIN,INT_MAX);
+        // return solve(root,INT_MIN,INT_MAX);
+        bool ans = true;
+        TreeNode* prev = NULL;
+        solve2(root,prev,ans);
+        return ans;
     }
 };
