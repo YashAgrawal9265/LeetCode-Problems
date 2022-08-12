@@ -11,22 +11,22 @@
  */
 class Solution {
 public:
-    string solve(TreeNode* root, int& cameras){
+    string solve(TreeNode* root, int& camera){
         if(!root) return "ok";
-        string left = solve(root->left,cameras);
-        string right = solve(root->right,cameras);
-        if(left == "want" || right == "want"){
-            cameras++;
+        string left = solve(root->left,camera);
+        string right = solve(root->right,camera);
+        if(left == "want" or right == "want"){
+            camera++;
             return "provide";
         }
-        else if(left == "provide" || right == "provide"){
+        if(left == "provide" or right == "provide"){
             return "ok";
         }
         return "want";
     }
     int minCameraCover(TreeNode* root) {
-        int cameras = 0;
-        if(solve(root,cameras) == "want") cameras++;
-        return cameras;
+        int camera = 0;
+        if(solve(root,camera) == "want") camera++;
+        return camera;
     }
 };
