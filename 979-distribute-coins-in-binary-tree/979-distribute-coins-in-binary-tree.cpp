@@ -11,16 +11,19 @@
  */
 class Solution {
 public:
-    int solve(TreeNode* root, int& steps){
+    int count;
+    int solve(TreeNode* root){
         if(!root) return 0;
-        int left = solve(root->left,steps);
-        int right = solve(root->right,steps);
-        steps += abs(left) + abs(right);
-        return root->val + left + right - 1;
+        int left = solve(root->left);
+        int right = solve(root->right);
+        count += abs(left) + abs(right);
+        return left + right + root->val - 1;
+        
     }
     int distributeCoins(TreeNode* root) {
-        int steps = 0;
-        solve(root,steps);
-        return steps;
+        count = 0;
+        solve(root);
+        return count;
+        
     }
 };
