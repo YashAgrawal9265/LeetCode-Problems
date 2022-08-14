@@ -11,31 +11,24 @@
  */
 class Solution {
 public:
-    vector<TreeNode*> helper(int n, unordered_map<int,vector<TreeNode*>>& dp){
-        if(n == 1){
-            TreeNode* root = new TreeNode(0);
-            vector<TreeNode*> cur;
-            cur.push_back(root);
-            return cur;
-        }
-        if(dp.find(n) != dp.end()) return dp[n];
+    vector<TreeNode*> solve(int n){
+        if(n == 1) return {new TreeNode(0)};
         vector<TreeNode*> cur;
         for(int i=1;i<n;i+=2){
-            vector<TreeNode*> leftTree = helper(i,dp);
-            vector<TreeNode*> rightTree = helper(n-i-1,dp);
-            for(auto l: leftTree){
-                for(auto r: rightTree){
+            vector<TreeNode*> left = solve(i);
+            vector<TreeNode*> right = solve(n-i-1);
+            for(auto l: left){
+                for(auto r: right){
                     TreeNode* root = new TreeNode(0);
                     root->left = l;
-                    root->right = r;
+                    root->right =r;
                     cur.push_back(root);
                 }
             }
         }
-        return dp[n] = cur;
+        return cur;
     }
     vector<TreeNode*> allPossibleFBT(int n) {
-        unordered_map<int,vector<TreeNode*>> dp;
-        return helper(n,dp);
+        return solve(n);
     }
 };
