@@ -1,17 +1,28 @@
 class Solution {
 public:
     void setZeroes(vector<vector<int>>& mat) {
-        vector<pair<int,int>> v;
+        bool col0 = true;
         int m = mat.size(), n = mat[0].size();
         for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(mat[i][j] == 0) v.push_back({i,j});
+            if(mat[i][0] == 0) col0 = false;
+            for(int j=1;j<n;j++){
+                if(mat[i][j] == 0){
+                    mat[0][j] = 0;
+                    mat[i][0] = 0;
+                }
             }
+            
         }
-        for(auto it: v){
-            int x = it.first, y = it.second;
-            for(int i=0;i<n;i++) mat[x][i] = 0;
-            for(int i=0;i<m;i++) mat[i][y] = 0;
+        
+        for(int i=m-1;i>=0;i--){
+            for(int j=n-1;j>=1;j--){
+                if(mat[0][j] == 0 or mat[i][0] == 0){
+                    mat[i][j] = 0;
+                }
+            }
+            if(col0 == false){
+                mat[i][0] = 0;
+            }
         }
     }
 };
