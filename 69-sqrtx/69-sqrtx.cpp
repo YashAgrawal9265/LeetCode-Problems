@@ -1,13 +1,15 @@
 class Solution {
 public:
     int mySqrt(int x) {
-        int i = 0;
-        while(true){
-            if(1LL*i*i > x){
-                return i-1;
-            }
-            i++;
+        
+        
+        int l = 0, h = x;
+        while(h-l > 1){
+            int mid = (l + h) >> 1;
+            if(1LL*mid*mid <= x) l = mid;
+            else h = mid - 1;
         }
-        return i;
+        if(h*h <= x) return h;
+        return l;
     }
 };
