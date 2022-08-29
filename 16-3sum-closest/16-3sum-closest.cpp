@@ -6,7 +6,7 @@ public:
         int minDiff = INT_MAX, result;
         for(int i=0;i<n-2;i++){
             int left = i + 1, right = n-1;
-            int k = target - nums[i];
+         
             while(left < right){
                 int x = nums[i] + nums[left] + nums[right];
                 
@@ -14,10 +14,10 @@ public:
                     minDiff = abs(target-x);
                     result = x;
                 }
-                if(nums[left] + nums[right] < k){
+                if(x < target){
                     left++;
                 }
-                else if(nums[left] + nums[right] > k){
+                else if(x > target){
                     right--;
                 }
                 else{
