@@ -3,8 +3,7 @@ public:
     int minSwap(vector<int>& nums1, vector<int>& nums2) {
         int n = nums1.size();
         
-        vector<vector<int>> dp(n+1,vector<int>(2,-1));
-        dp[n][0] = 0, dp[n][1] = 0;
+        vector<int> next(2,0), cur(2,0);
         
         for(int idx=n-1;idx>=0;idx--){
             for(int swapped = 0; swapped <= 1; swapped++){
@@ -19,15 +18,16 @@ public:
 
                 int noSwap = 1e8, swap = 1e8;
                 if(nums1[idx] > prev1 and nums2[idx] > prev2){
-                    noSwap = dp[idx+1][0];
+                    noSwap = next[0];
                 }
                 if(nums2[idx] > prev1 and nums1[idx] > prev2){
-                    swap = 1 + dp[idx+1][1];
+                    swap = 1 + next[1];
                 }
-                dp[idx][swapped] = min(swap,noSwap);
+                cur[swapped] = min(swap,noSwap);
             }
+            next = cur;
             
         }
-        return dp[0][0];
+        return next[0];
     }
 };
