@@ -1,37 +1,33 @@
 class Solution {
 public:
     bool isVowel(char c){
-        if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') return true;
+        if(c == 'a' or c == 'e' or c == 'i' or c == 'o' or c == 'u') return true;
         return false;
     }
-    int count_at_most_k_vowel(string& str, int k){
-        int n = str.size();
+    int solve(string str, int k){
         unordered_map<char,int> mp;
-        int right = 0, left = 0;
-        int count = 0;
-        int result = 0;
+        int left = 0, right = 0, count = 0;
+        int n = str.size();
         while(right < n){
             if(!isVowel(str[right])){
-                left = right + 1;
-                right++;
                 mp.clear();
-                count = 0;
-                continue;
+                left = right + 1;
             }
-            mp[str[right]]++;
-            if(mp[str[right]] == 1) count++;
-            while(count > k){
-                mp[str[left]]--;
-                if(mp[str[left]] == 0) count--;
-                left++;
+            else{
+                mp[str[right]]++;
+                while(mp.size() > k){
+                    mp[str[left]]--;
+                    if(mp[str[left]] == 0) mp.erase(str[left]);
+                    left++;
+                }
+                count += (right - left + 1);
             }
-            result += (right-left+1);
             right++;
         }
-        return result;
+        return count;
     }
     int countVowelSubstrings(string str) {
-        return count_at_most_k_vowel(str,5) - count_at_most_k_vowel(str,4);
-        
+       
+        return solve(str,5) - solve(str,4);
     }
 };
