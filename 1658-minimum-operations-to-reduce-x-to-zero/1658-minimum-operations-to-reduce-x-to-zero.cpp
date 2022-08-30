@@ -18,7 +18,7 @@ public:
             if(mp.find(sum - target) != mp.end()){
                 mxLen = max(mxLen,i - mp[sum-target]);
             }
-            mp[sum] = i;
+            if(mp.find(sum) == mp.end())mp[sum] = i;
             
         }
         
