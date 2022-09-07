@@ -13,12 +13,14 @@ class Solution {
 public:
     string solve(TreeNode* root){
         if(!root) return "";
-        string str = to_string(root->val);
-        if((!root->left and root->right) or root->left){
-            str += '(' + solve(root->left) + ')';
+        string str = "";
+        str += to_string(root->val);
+        if(!root->left and !root->right) return str;
+        if(root->left or (!root->left and root->right)){
+            str += "(" + solve(root->left) + ")";
         }
         if(root->right){
-            str += '(' + solve(root->right) + ')';
+            str += "(" + solve(root->right) + ")";
         }
         return str;
     }
