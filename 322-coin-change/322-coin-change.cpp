@@ -20,20 +20,21 @@ public:
     int coinChange(vector<int> &coins, int tar)
     {
         int n = coins.size();
-        vector<vector<int>> dp(n+1, vector<int>(tar + 1, 1e9));
-        dp[n][0] = 0;
+        vector<int> next(tar + 1, 1e9), cur(tar+1,1e9);
+        next[0] = 0, cur[0] = 0;
         for(int idx = n-1;idx>=0;idx--){
             for(int target=0;target<=tar;target++){
-                int notake = dp[idx + 1][target];
+                int notake = next[target];
                 int take = 1e9;
                 if (target >= coins[idx])
-                    take = 1 + dp[idx][target - coins[idx]];
+                    take = 1 + cur[target - coins[idx]];
 
-                dp[idx][target] = min(notake, take);
+                cur[target] = min(notake, take);
             }
+            next = cur;
         }
         
-        int ans = dp[0][tar];
+        int ans = next[tar];
         return ans >= 1e9 ? -1 : ans;
     }
 };
