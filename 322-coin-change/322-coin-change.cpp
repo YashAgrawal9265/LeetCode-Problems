@@ -17,11 +17,23 @@ public:
 
         return dp[idx][target] = min(notake, take);
     }
-    int coinChange(vector<int> &coins, int target)
+    int coinChange(vector<int> &coins, int tar)
     {
         int n = coins.size();
-        vector<vector<int>> dp(n, vector<int>(target + 1, -1));
-        int ans = solve(coins, 0, target,n, dp);
+        vector<vector<int>> dp(n+1, vector<int>(tar + 1, 1e9));
+        dp[n][0] = 0;
+        for(int idx = n-1;idx>=0;idx--){
+            for(int target=0;target<=tar;target++){
+                int notake = dp[idx + 1][target];
+                int take = 1e9;
+                if (target >= coins[idx])
+                    take = 1 + dp[idx][target - coins[idx]];
+
+                dp[idx][target] = min(notake, take);
+            }
+        }
+        
+        int ans = dp[0][tar];
         return ans >= 1e9 ? -1 : ans;
     }
 };
