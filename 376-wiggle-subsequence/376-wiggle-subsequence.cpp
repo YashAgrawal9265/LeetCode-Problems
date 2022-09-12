@@ -22,10 +22,6 @@ public:
     }
     int wiggleMaxLength(vector<int>& nums) {
         int n = nums.size();
-        if(n == 1) return 1;
-        if(n == 2){
-            if(nums[0] == nums[1]) return 1;
-        }
         memset(dp,-1,sizeof(dp));
         return max(solve(nums,0,-1,n,0), solve(nums,0,-1,n,1));
        
