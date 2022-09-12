@@ -1,26 +1,33 @@
 class Solution {
 public:
+    int dp[1005][1005][3];
+    // greater = 1 means take greater element;
+    int solve(vector<int>& nums, int idx, int prev_idx, int n, int greater){
+        if(idx == n) return 0;
+        if(dp[idx][prev_idx+1][greater] != -1) return dp[idx][prev_idx+1][greater];
+        int notake = solve(nums,idx+1,prev_idx,n,greater);
+        int take = 0;
+        if(prev_idx == -1){
+            take = 1 + solve(nums,idx+1,idx,n,greater);
+        }
+        else{
+            if(greater and nums[idx] > nums[prev_idx]){
+                take = 1 + solve(nums,idx+1,idx,n,0);
+            }
+            else if(greater == 0 and nums[idx] < nums[prev_idx]){
+                take = 1 + solve(nums,idx+1,idx,n,1);
+            }
+        }
+        return dp[idx][prev_idx+1][greater] = max(take,notake);
+    }
     int wiggleMaxLength(vector<int>& nums) {
         int n = nums.size();
-        int prev_greater = 1, prev_smaller = 1;
-        int cur_greater, cur_smaller;
-        for(int i=1;i<n;i++){
-            
-            if(nums[i] > nums[i-1]){
-                cur_greater = 1 + prev_smaller;
-                cur_smaller = prev_smaller;
-            }
-            else if(nums[i] < nums[i-1]){
-                cur_smaller = 1 + prev_greater;
-                cur_greater = prev_greater;
-            }
-            else{
-                cur_smaller = prev_smaller;
-                cur_greater = prev_greater;
-            }
-            prev_greater = cur_greater;
-            prev_smaller = cur_smaller;
+        if(n == 1) return 1;
+        if(n == 2){
+            if(nums[0] == nums[1]) return 1;
         }
-        return max(prev_smaller,prev_greater);
+        memset(dp,-1,sizeof(dp));
+        return max(solve(nums,0,-1,n,0), solve(nums,0,-1,n,1));
+       
     }
 };
