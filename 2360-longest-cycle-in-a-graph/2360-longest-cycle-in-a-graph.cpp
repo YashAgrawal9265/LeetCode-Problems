@@ -10,7 +10,7 @@ public:
                 dfs(adj,vis,dfsVis,dist,it,curDist+1);
             }
             else if(dfsVis[it]){
-                longest_cycle = max(longest_cycle, curDist - dist[it] + 1);
+                longest_cycle = max(longest_cycle, dist[node] - dist[it] + 1);
             }
         }
         dfsVis[node] = 0;
