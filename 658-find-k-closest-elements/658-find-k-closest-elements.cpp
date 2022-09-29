@@ -1,37 +1,22 @@
+
+bool cmp(pair<int,pair<int,int>>& a, pair<int,pair<int,int>>& b){
+    if(a.first < b.first) return true;
+    else if(a.first == b.first){
+        return a.second < b.second;
+    }
+    return false;
+}
 class Solution {
 public:
     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
-        int n = arr.size();
-        int low = 0, high = n-1;
-        while(high - low > 1){
-            int mid = (high + low) >> 1;
-            if(arr[mid] <= x) low = mid;
-            else high = mid;
-        }  
-        int closestIdx;
-        if(arr[low] == x) closestIdx = low;
-        else if(arr[high] == x) closestIdx = high;
-        else{
-            if(abs(arr[low]-x) <= abs(arr[high] - x)){
-                closestIdx = low;
-            }
-            else{
-                closestIdx = high;
-            }
+        vector<pair<int,pair<int,int>>> v;
+        for(int i=0;i<arr.size();i++){
+            v.push_back({abs(arr[i]-x),{i,arr[i]}});
         }
-        k--;
-        int left = closestIdx-1, right = closestIdx+1;
-        while(k > 0){
-            if(left < 0) right++;
-            else if(right >= n) left--;
-            else if(abs(arr[left]-x) <= abs(arr[right]-x)) left--;
-            else right++;
-            k--;
-        }
+        sort(v.begin(),v.end(),cmp);
         vector<int> result;
-        for(int i=left+1;i<right;i++){
-            result.push_back(arr[i]);
-        }
+        for(int i=0;i<k;i++) result.push_back(v[i].second.second);
+        sort(result.begin(),result.end());
         return result;
     }
 };
