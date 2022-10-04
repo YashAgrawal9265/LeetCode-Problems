@@ -7,11 +7,6 @@ public:
         if(dp[idx] != -1) return dp[idx];
         string temp = "";
         temp += str[idx];
-        if(idx + 1 < n and str[idx+1] == '0'){
-            temp += str[idx+1];
-            if(stoi(temp) > 26) return dp[idx] = 0;
-            return dp[idx] = solve(str,idx+2,n);
-        }
         int op1 = solve(str,idx+1,n);
         int op2 = 0;
         if(idx + 1 < n){
