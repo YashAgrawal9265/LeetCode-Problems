@@ -11,7 +11,8 @@ class Solution{
   public:
     long long int floorSqrt(long long int x) 
     {
-        long long int low = 1, high = x;
+        if(x == 1) return 1;
+        long long int low = 1, high = x/2;
         while(high - low > 1){
             long long int mid = (low + high) >> 1;
             if(mid*mid <= x){
