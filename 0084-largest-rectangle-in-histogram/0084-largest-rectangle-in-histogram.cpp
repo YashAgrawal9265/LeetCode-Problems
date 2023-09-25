@@ -5,7 +5,7 @@ public:
         stack<int> st;
         int maxi = 0;
         for(int i=0;i<=n;i++){
-            while(!st.empty() and (i == n or arr[i] < arr[st.top()])){
+            while(!st.empty() and (i == n or arr[i] <= arr[st.top()])){
                 int height = arr[st.top()];
                 st.pop();
                 int right = i;
