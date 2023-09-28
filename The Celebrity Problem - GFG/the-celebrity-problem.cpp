@@ -13,23 +13,18 @@ class Solution
     //Function to find if there is a celebrity in the party or not.
     int celebrity(vector<vector<int> >& mat, int n) 
     {
-        stack<int> st;
-        for(int i=0;i<n;i++) st.push(i);
-        while(st.size() > 1){
-            int i = st.top();
-            st.pop();
-            int j = st.top();
-            st.pop();
-            // i knows j then, i is not a celebrity
+        int i = 0, j = n-1;
+        while(i < j){
+            // i knows j
             if(mat[i][j] == 1){
-                st.push(j);
+                i++;
             }
-            // i don't know j then, j is not a celebrity
             else{
-                st.push(i);
+                j--;
             }
         }
-        int cele = st.top();
+        
+        int cele = i;
         for(int i=0;i<n;i++){
             if(i == cele) continue;
             if(mat[cele][i] == 1 or mat[i][cele] == 0) return -1;
