@@ -1,15 +1,11 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string str) {
-        int left = 0, right = 0;
-        int map[257] = {0};
-        int mxLen = 0;
+        vector<int> mp(256,-1);
+        int left = 0, right = 0, mxLen = 0;
         while(right < str.size()){
-            map[str[right]]++;
-            while(left < right and map[str[right]] > 1){
-                map[str[left]]--;
-                left++;
-            }
+            if(mp[str[right]] != -1) left = max(left,mp[str[right]]+1);
+            mp[str[right]] = right;
             mxLen = max(mxLen,right-left+1);
             right++;
         }
