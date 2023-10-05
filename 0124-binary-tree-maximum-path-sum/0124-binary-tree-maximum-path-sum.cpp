@@ -13,11 +13,11 @@ class Solution {
 public:
     int solve(TreeNode* root, int& mxSum){
         if(!root) return 0;
-        int left = solve(root->left,mxSum);
-        int right = solve(root->right,mxSum);
-        int sum = root->val+left+right;
-        mxSum = max(mxSum,max(sum,max(root->val,max(root->val+left,root->val+right))));
-        return max(root->val,max(root->val+left,root->val+right));
+        int left = max(solve(root->left,mxSum),0);
+        int right = max(solve(root->right,mxSum),0);
+        mxSum = max(mxSum,root->val+left+right);
+        return max(root->val+left,root->val+right);
+        
     }
     int maxPathSum(TreeNode* root) {
         int mxSum = INT_MIN;
