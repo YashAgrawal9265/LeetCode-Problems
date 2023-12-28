@@ -9,18 +9,17 @@ public:
     }
     
     int next(int price) {
-        while(!st.empty() and price >= st.top().first) st.pop();
+        while(!st.empty() and st.top().first <= price){
+            st.pop();
+        }
         int result;
-        if(st.empty()) result = idx + 1;
-        else result = idx - st.top().second;
-        st.push({price,idx});
-        idx++;
+        if(!st.empty()){
+            result = idx - st.top().second;
+        }
+        else{
+            result = idx - (-1);
+        }
+        st.push({price,idx++});
         return result;
     }
 };
-
-/**
- * Your StockSpanner object will be instantiated and called as such:
- * StockSpanner* obj = new StockSpanner();
- * int param_1 = obj->next(price);
- */
