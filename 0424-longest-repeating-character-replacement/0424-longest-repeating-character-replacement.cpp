@@ -10,7 +10,7 @@ public:
             while(right - left + 1 - mxFreq > k){
                 mp[str[left]]--;
                 left++;
-                mxFreq = max(mxFreq,mp[str[left]]);
+                
             }
             mxLen = max(mxLen,right-left+1);
             right++;
