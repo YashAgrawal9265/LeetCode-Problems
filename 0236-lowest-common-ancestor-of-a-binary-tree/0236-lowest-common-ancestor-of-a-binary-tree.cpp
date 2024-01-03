@@ -35,7 +35,7 @@ public:
             if(path1[i]->val != path2[j]->val) return path1[i-1];
             i++,j++;
         }
-        if(i<path1.size()) return path2[j-1];
+        // if(i<path1.size()) return path2[j-1];
         return path1[i-1];
     }
 };
