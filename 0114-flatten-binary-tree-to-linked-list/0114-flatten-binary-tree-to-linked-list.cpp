@@ -11,19 +11,17 @@
  */
 class Solution {
 private:
-    void solve(TreeNode* root, TreeNode*& prev){
+    void solve(TreeNode* root, TreeNode*& pre){
         if(!root) return;
-        solve(root->right,prev);
-        solve(root->left,prev);
-        
-        root->right = prev;
+        solve(root->right,pre);
+        solve(root->left,pre);
+        root->right = pre;
+        pre = root;
         root->left = NULL;
-        prev = root;
     }
 public:
-    void flatten(TreeNode* root){
-        TreeNode* prev = NULL;
-        solve(root,prev);
-        
+    void flatten(TreeNode* root) {
+        TreeNode* pre = NULL;
+        solve(root,pre);
     }
 };
