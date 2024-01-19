@@ -16,7 +16,10 @@ private:
         
         solve(root->left,prev,ans);
         if(prev){
-            if(prev->val >= root->val) ans = false;
+            if(prev->val >= root->val){
+                ans = false; 
+                return;
+            }
         }
         prev = root;
         solve(root->right,prev,ans);
