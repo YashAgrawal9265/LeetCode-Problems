@@ -1,35 +1,30 @@
 class Solution {
 public:
+    bool checkCycle(vector<vector<int>>& graph, vector<int>& vis, vector<int>& dfsVis, vector<int>& check, int node){
+        vis[node] = 1;
+        dfsVis[node] = 1;
+        for(auto it: graph[node]){
+            if(!vis[it]){
+                if(checkCycle(graph,vis,dfsVis,check,it)) return true;
+            }
+            else if(dfsVis[it]) return true;
+        }
+        dfsVis[node] = 0;
+        check[node] = 1;
+        return false;
+    }
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
-        int n = graph.size();
-        vector<int> adj[n];
-        vector<int> indegree(n);
-        
-        
-        // reversing the nodes
-        for(int i=0;i<n;i++){
-            for(int j=0;j<graph[i].size();j++){
-                int u = graph[i][j], v = i;
-                adj[u].push_back(v);
-                indegree[v]++;
+        int v = graph.size();
+        vector<int> vis(v,0), dfsVis(v,0), check(v,0);
+        for(int i=0;i<v;i++){
+            if(!vis[i]){
+                checkCycle(graph,vis,dfsVis,check,i);
             }
         }
-        queue<int> q;
-        for(int i=0;i<n;i++){
-            if(indegree[i] == 0) q.push(i);
-        }
-        
         vector<int> result;
-        while(!q.empty()){
-            int node = q.front();
-            q.pop();
-            result.push_back(node);
-            for(auto it: adj[node]){
-                indegree[it]--;
-                if(indegree[it] == 0) q.push(it);
-            }
+        for(int i=0;i<v;i++){
+            if(check[i] == 1) result.push_back(i);
         }
-        sort(result.begin(),result.end());
         return result;
     }
 };
