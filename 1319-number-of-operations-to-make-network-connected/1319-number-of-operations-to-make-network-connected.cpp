@@ -26,6 +26,6 @@ public:
                 dfs(adj,vis,i);
             }
         }
-        return components == 0 ? -1 : components-1;
+        return components-1;
     }
 };
