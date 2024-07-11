@@ -16,7 +16,7 @@ public:
                 }
             }
             else{
-                low[node] = min(low[node],in[it]);
+                low[node] = min(low[node],low[it]);
             }
         }
     }
