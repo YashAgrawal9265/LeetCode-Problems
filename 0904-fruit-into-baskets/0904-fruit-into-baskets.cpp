@@ -6,7 +6,7 @@ public:
         unordered_map<int,int> mp;
         while(r < n){
             mp[fruits[r]]++;
-            while(mp.size() > 2){
+            if(mp.size() > 2){
                 mp[fruits[l]]--;
                 if(mp[fruits[l]] == 0) mp.erase(fruits[l]);
                 l++;
