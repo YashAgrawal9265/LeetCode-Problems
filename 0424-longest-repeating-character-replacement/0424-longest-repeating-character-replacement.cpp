@@ -2,19 +2,20 @@ class Solution {
 public:
     int characterReplacement(string str, int k) {
         int n = str.size();
-        int left = 0, right = 0, mxLen = 0, mxFreq = 0;
+        int l = 0, r = 0, ans=0, mxFreq = 0;
         unordered_map<char,int> mp;
-        while(right < n){
-            mp[str[right]]++;
-            mxFreq = max(mxFreq,mp[str[right]]);
-            while(right - left + 1 - mxFreq > k){
-                mp[str[left]]--;
-                left++;
-                
+        while(r < n){
+            mp[str[r]]++;
+            mxFreq = max(mxFreq,mp[str[r]]);
+            while((r-l+1) - mxFreq > k){
+                mp[str[l]]--;
+                mxFreq = 0;
+                for(auto it: mp) mxFreq = max(mxFreq,it.second);
+                l++;
             }
-            mxLen = max(mxLen,right-left+1);
-            right++;
+            ans = max(ans,r-l+1);
+            r++;
         }
-        return mxLen;
+        return ans;
     }
 };
