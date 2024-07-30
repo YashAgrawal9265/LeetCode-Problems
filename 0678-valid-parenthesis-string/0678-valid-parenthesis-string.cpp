@@ -1,28 +1,24 @@
 class Solution {
 public:
-    bool solve(string& str, int idx, int open, int n,vector<vector<int>>& dp){
-        if(open < 0) return false;
-        if(dp[idx][open] != -1) return dp[idx][open];
-        if(idx == n){
-            if(open == 0)return true;
-            return false;
+    bool checkValidString(string str) {
+        int n = str.size();
+        int balance = 0;
+        for(auto it: str){
+            if(it == '(' or it == '*') balance++;
+            else{
+                if(balance <= 0) return false;
+                balance--;
+            }
         }
-        if(str[idx] == '(') return dp[idx][open] = solve(str,idx+1,open+1,n,dp);
-        else if(str[idx] == ')'){
-            if(open <= 0) return dp[idx][open] = false;
-            else return dp[idx][open] = solve(str,idx+1,open-1,n,dp);
-            // return solve(str,idx+1,open-1,n);
+        if(balance == 0) return true;
+        balance = 0;
+        for(int i=n-1;i>=0;i--){
+            if(str[i] == ')' or str[i] == '*') balance++;
+            else{
+                if(balance <= 0) return false;
+                balance--;
+            }
         }
-        else{
-            bool assumeOpen = solve(str,idx+1,open+1,n,dp);
-            bool assumeEmpty = solve(str,idx+1,open,n,dp);
-             bool assumeClose = solve(str,idx+1,open-1,n,dp);
-            return dp[idx][open] = assumeOpen or assumeEmpty or assumeClose;
-        }
-      
-    }
-    bool checkValidString(string s) {
-        vector<vector<int>> dp(s.size()+1,vector<int>(s.size()+1,-1));
-        return solve(s,0,0,s.size(),dp);
+        return true;
     }
 };
