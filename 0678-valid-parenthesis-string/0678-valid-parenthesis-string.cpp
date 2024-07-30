@@ -2,23 +2,24 @@ class Solution {
 public:
     bool checkValidString(string str) {
         int n = str.size();
-        int balance = 0;
+        int min = 0, max = 0;
         for(auto it: str){
-            if(it == '(' or it == '*') balance++;
-            else{
-                if(balance <= 0) return false;
-                balance--;
+            if(it == '('){
+                min++;
+                max++;
             }
-        }
-        if(balance == 0) return true;
-        balance = 0;
-        for(int i=n-1;i>=0;i--){
-            if(str[i] == ')' or str[i] == '*') balance++;
-            else{
-                if(balance <= 0) return false;
-                balance--;
+            else if(it == ')'){
+                min--;
+                max--;
             }
+            else{
+                min--;
+                max++;
+            }
+            if(min < 0) min = 0;
+            if(max < 0) return false;
+            
         }
-        return true;
+        return min == 0;
     }
 };
