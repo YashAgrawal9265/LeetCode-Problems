@@ -2,22 +2,32 @@ class Solution {
 public:
     int candy(vector<int>& ratings) {
         int n = ratings.size();
-        vector<int> candies(n,0);
-        candies[0] = 1;
-        for(int i=1;i<n;i++){
-            if(ratings[i] > ratings[i-1]) candies[i] = candies[i-1] + 1;
-            else candies[i] = 1;
-        }
-        // for(auto it: candies) cout<<it<<" ";
-        int cnt = candies[n-1];
-        for(int i=n-2;i>=0;i--){
-            if(ratings[i] > ratings[i+1]){
-                candies[i] = max(candies[i],candies[i+1] + 1);
+        int i = 1;
+        int sum = 1;
+        while(i<n){
+            // considering flat surface;
+            while(i<n and ratings[i] == ratings[i-1]){
+                sum++;
+                i++;
             }
-            cnt += candies[i];
+          
+            // considering upper surface of slope
+            int peak = 1;
+            while(i<n and ratings[i] > ratings[i-1]){
+                peak++;
+                sum += peak;
+                i++;
+            }
+            
+            // considering lower surface of slope
+            int down = 1;
+            while(i<n and ratings[i] < ratings[i-1]){
+                sum += down;
+                down++;
+                i++;
+            }
+            if(down > peak) sum += (down-peak);
         }
-        
-        return cnt;
-        
+        return sum;
     }
 };
