@@ -1,39 +1,32 @@
 class Solution {
 public:
     int divide(int dividend, int divisor) {
-        // INT_MIN = -2^31;
-        if(dividend == INT_MIN and divisor == -1){
-            return INT_MAX; // 2^31 - 1;
-        }
-        
-        int sign;
-        
-        
-        // if both dividend and divisor having same sign then 
-        // sign is positive else negative
-        if((dividend < 0) ^ (divisor < 0)){
-            sign = -1;
-        }
-        else{
+        if(dividend == divisor) return 1;
+        int sign = -1;
+        if((divisor >= 0 and dividend >= 0) or (divisor < 0 and dividend < 0))
             sign = 1;
-        }
-        
-        
-        
-        // update dividend and divisor to positive
-        long long divid = abs(dividend);
-        long long divis = abs(divisor);
-        
-        long long result = 0;
-        while(divid - divis >= 0){
-            int count = 0; // 2^0 = 1
-            while(divid - (divis << 1 << count) >= 0){
-                count++;
+        long n = abs(dividend);
+        long d=abs(divisor);
+        long ans = 0;
+        while(n >= d){
+            int cnt = 0;
+            while(n > (d<<(cnt+1))){
+                cnt++;
             }
-            result += 1 << count;
-            divid -= divis << count;
+            
+            ans += 1<<cnt;
+            n -= (d<<cnt);
         }
-       
-        return result*sign;
+        
+        long a = 1, b = 31;
+   
+        if(ans == (a<<b) and sign == 1){
+           return INT_MAX;
+        }
+        if(ans == (a<<b) and sign == -1) return INT_MIN;
+        if(sign == -1) return -ans;
+        return ans;
+            
+        
     }
 };
