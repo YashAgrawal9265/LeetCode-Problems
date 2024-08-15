@@ -1,19 +1,16 @@
 class Solution {
-private:
+public:
     double solve(double base, long power){
-        if(power == 0) return 1.0;
+        if(power == 0) return 1;
         if(power&1){
             return base*solve(base,power-1);
         }
-        double x = solve(base,power/2);
-        return x*x;
+        return solve(base*base,power/2);
     }
-public:
     double myPow(double x, int n) {
-        long power = n;
-        if(n < 0) power *= -1;
-        double ans = solve(x,power);
-        if(n < 0) return 1.0/ans;
-        return ans;
+        if(n < 0){
+            return 1 / solve(x,abs(n));
+        }
+        return solve(x,n);
     }
 };
