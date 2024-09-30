@@ -5,13 +5,13 @@ public:
         vector<vector<int>> dist(m,vector<int>(n,1e8));
         int xdir[] = {-1,0,1,0};
         int ydir[] = {0,1,0,-1};
-        queue<pair<int,pair<int,int>>> q;
+        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> q;
         dist[0][0] = 0;
         q.push({0,{0,0}});
         while(!q.empty()){
-            int node = q.front().first;
-            int x = q.front().second.first;
-            int y = q.front().second.second;
+            int node = q.top().first;
+            int x = q.top().second.first;
+            int y = q.top().second.second;
             q.pop();
             for(int i=0;i<4;i++){
                 int nx = x + xdir[i];
