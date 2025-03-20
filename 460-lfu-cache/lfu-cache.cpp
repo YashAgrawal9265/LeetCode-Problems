@@ -53,7 +53,7 @@ public:
         curSize = 0;
     }
     void updateFreqList(Node* node){
-        // keyNode.erase(node->key);
+        keyNode.erase(node->key);
         List* list = freqList[node->cnt];
         list->deleteNode(node);
         if(minFreq == node->cnt and list->size == 0){
@@ -66,7 +66,7 @@ public:
         node->cnt++;
         newList->insertAfterHead(node);
         freqList[node->cnt] = newList;
-        // keyNode[node->value] = node;
+        keyNode[node->key] = node;
     }
     int get(int key) {
         if(keyNode.find(key) != keyNode.end()){
