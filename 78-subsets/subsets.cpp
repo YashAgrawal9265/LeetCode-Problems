@@ -12,9 +12,18 @@ public:
     }
     vector<vector<int>> subsets(vector<int>& nums) {
         int n = nums.size();
-        vector<int> temp;
+        // vector<int> temp;
         vector<vector<int>> result;
-        solve(nums,0,n,result,temp);
+        // solve(nums,0,n,result,temp);
+        for(int i=0;i<(1<<n);i++){
+            vector<int> temp;
+            for(int j=0;j<n;j++){
+                if(i&(1<<j)){
+                    temp.push_back(nums[j]);
+                }
+            }
+            result.push_back(temp);
+        }
         return result;
     }
 };
