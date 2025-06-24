@@ -2,15 +2,15 @@ class Solution {
 public:
     string minWindow(string str, string t) {
         if(t.size() > str.size()) return "";
-        int n = str.size();
-        int l = 0, r = 0, stIdx = -1, minLen = 1e9, cnt = 0;
-        unordered_map<int,int> mp;
+        unordered_map<char,int> mp;
         for(auto it: t) mp[it]++;
-        while(r < n){
+
+        int l = 0, r= 0, minLen = 1e8, stIdx = -1, cnt = 0;
+        while(r < str.size()){
             if(mp[str[r]] > 0) cnt++;
             mp[str[r]]--;
             while(cnt == t.size()){
-                if((r-l+1) < minLen){
+                if(r-l+1 < minLen){
                     minLen = r-l+1;
                     stIdx = l;
                 }
@@ -19,8 +19,8 @@ public:
                 l++;
             }
             r++;
+
         }
-        if(minLen == 1e9) return "";
-        return str.substr(stIdx,minLen);
+        return stIdx == -1 ? "" :  str.substr(stIdx,minLen);
     }
 };
