@@ -4,23 +4,27 @@ public:
         if(t.size() > str.size()) return "";
         unordered_map<char,int> mp;
         for(auto it: t) mp[it]++;
-
-        int l = 0, r= 0, minLen = 1e8, stIdx = -1, cnt = 0;
+        int winSize = mp.size();
+        int l = 0, r= 0, result = INT_MAX, stIdx;
         while(r < str.size()){
-            if(mp[str[r]] > 0) cnt++;
-            mp[str[r]]--;
-            while(cnt == t.size()){
-                if(r-l+1 < minLen){
-                    minLen = r-l+1;
+            if(mp.find(str[r]) != mp.end()){
+                mp[str[r]]--;
+                if(mp[str[r]] == 0) winSize--;
+            }
+            while(winSize == 0){
+                if((r-l+1) < result){
                     stIdx = l;
+                    result = r-l+1;
                 }
-                mp[str[l]]++;
-                if(mp[str[l]] > 0) cnt--;
+                if(mp.find(str[l]) != mp.end()){
+                    mp[str[l]]++;
+                    if(mp[str[l]] > 0) winSize++;
+                }
                 l++;
             }
             r++;
-
         }
-        return stIdx == -1 ? "" :  str.substr(stIdx,minLen);
+        if(result >= INT_MAX) return "";
+        return str.substr(stIdx,result);
     }
 };
