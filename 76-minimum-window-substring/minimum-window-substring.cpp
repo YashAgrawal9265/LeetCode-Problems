@@ -1,30 +1,29 @@
 class Solution {
 public:
     string minWindow(string str, string t) {
-        if(t.size() > str.size()) return "";
+        int n = str.size();
+        int left = 0, right = 0, mnLen = 1e8, stIdx = 0;
         unordered_map<char,int> mp;
         for(auto it: t) mp[it]++;
         int winSize = mp.size();
-        int l = 0, r= 0, result = INT_MAX, stIdx;
-        while(r < str.size()){
-            if(mp.find(str[r]) != mp.end()){
-                mp[str[r]]--;
-                if(mp[str[r]] == 0) winSize--;
+        while(right < n){
+            if(mp.find(str[right]) != mp.end()){
+                mp[str[right]]--;
+                if(mp[str[right]] == 0) winSize--;
             }
             while(winSize == 0){
-                if((r-l+1) < result){
-                    stIdx = l;
-                    result = r-l+1;
+                if((right-left+1) < mnLen){
+                    mnLen = right-left+1;
+                    stIdx = left;
                 }
-                if(mp.find(str[l]) != mp.end()){
-                    mp[str[l]]++;
-                    if(mp[str[l]] > 0) winSize++;
+                if(mp.find(str[left]) != mp.end()){
+                    mp[str[left]]++;
+                    if(mp[str[left]] > 0) winSize++;
                 }
-                l++;
+                left++;
             }
-            r++;
+            right++;
         }
-        if(result >= INT_MAX) return "";
-        return str.substr(stIdx,result);
+        return mnLen >= 1e8 ? "" : str.substr(stIdx,mnLen);
     }
 };
