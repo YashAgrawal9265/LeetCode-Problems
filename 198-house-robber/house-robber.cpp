@@ -10,7 +10,14 @@ public:
     }
     int rob(vector<int>& nums) {
         int n = nums.size();
-        vector<int> dp(n+1,-1);
+        vector<int> dp(n+1,0);
+        for(int idx=0;idx<n;idx++){
+            int op1 = nums[idx], op2 = 0;
+            if(idx -2 >= 0) op1 += dp[idx-2];
+            if(idx -1 >= 0) op2 = dp[idx-1];
+            dp[idx] = max(op1,op2);
+        }
+        return dp[n-1];
         return solve(nums,n-1,dp);
     }
 };
