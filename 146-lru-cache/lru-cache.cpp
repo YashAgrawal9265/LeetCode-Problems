@@ -1,69 +1,71 @@
 class Node{
 public:
-    int key, value;
-    Node* prev, *next;
-    Node(int key, int value){
+    int val;
+    int key;
+    Node* next;
+    Node* prev;
+public:
+    Node(int key,int val){
         this->key = key;
-        this->value = value;
-        prev = NULL;
+        this->val = val;
         next = NULL;
+        prev = NULL;
     }
 };
+
 class LRUCache {
 private:
-    int capacity;
-    unordered_map<int,Node*> mp;
+    unordered_map<int, Node*> nodeMp;
     Node* head, *tail;
+    int cacheSize;
+    void deleteNode(Node*& node){
+        int key = node->key;
+        Node* prevNode = node->prev;
+        Node* nextNode = node->next;
+        if(prevNode) prevNode->next = nextNode;
+        if(nextNode) nextNode->prev = prevNode;
+        nodeMp.erase(key);
+    }
+    void insertAtFront(Node*& node){
+        int key = node->key;
+        head->next->prev = node;
+        node->next = head->next;
+        head->next = node;
+        node->prev = head;
+        nodeMp[key] = node;
+    }
 public:
     LRUCache(int capacity) {
-        this->capacity = capacity;
-        mp.clear();
+        cacheSize = capacity;
         head = new Node(-1,-1);
         tail = new Node(-1,-1);
         head->next = tail;
         tail->prev = head;
+        nodeMp.clear();
     }
-    void deleteNode(Node* node){
-        Node* prevNode = node->prev;
-        Node* nextNode = node->next;
-        prevNode->next = nextNode;
-        nextNode->prev = prevNode;
-    }
-    void insertAfterHead(Node* node){
-        Node* curNodeAfterHead = head->next;
-        head->next = node;
-        node->prev = head;
-        node->next = curNodeAfterHead;
-        curNodeAfterHead->prev = node;
-    }
+    
     int get(int key) {
-        // if key is present in map
-        if(mp.find(key) != mp.end()){
-            Node* node = mp[key];
-            deleteNode(node);
-            insertAfterHead(node);
-            return node->value;
-        }
-        return -1;
+        cout<<"get "<<key<<endl;
+        // cout<<nodeMp.size()<<" "<<key<<endl;
+        if(nodeMp.find(key) == nodeMp.end()) return -1;
+        Node* node = nodeMp[key];
+        int value = node->val;
+        deleteNode(node);
+
+        Node* newNode = new Node(key,value);
+        insertAtFront(newNode);
+        return value;
     }
     
     void put(int key, int value) {
-        if(mp.find(key) != mp.end()){
-            Node* node = mp[key];
-            node->value = value;
-            deleteNode(node);
-            insertAfterHead(node);
+        Node* newNode = new Node(key,value);
+        if(nodeMp.find(key) != nodeMp.end()){
+            deleteNode(nodeMp[key]);
         }
-        else{
-            if(mp.size() == capacity){
-            // delete least recently used cache which is before tail
-            mp.erase(tail->prev->key);
+        else if(nodeMp.size() == cacheSize){
             deleteNode(tail->prev);
-            }
-            Node* newNode = new Node(key,value);
-            mp[key] = newNode;
-            insertAfterHead(newNode);
         }
+        insertAtFront(newNode);
     }
 };
 
