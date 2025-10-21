@@ -13,12 +13,10 @@ class Solution {
 public:
     void solve(TreeNode* root, int& count, int maxi){
         if(!root) return;
-        if(root->val >= maxi){
-            count++;
-            maxi = root->val;
-        }
-        solve(root->left,count,maxi);
-        solve(root->right,count,maxi);
+        if(root->val >= maxi) count++;
+        int newMaxi = max(maxi,root->val);
+        solve(root->left,count,newMaxi);
+        solve(root->right,count,newMaxi);
     }
     int goodNodes(TreeNode* root) {
         int count = 0;
