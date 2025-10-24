@@ -34,9 +34,7 @@ public:
         if(p1win and p2win) return false; 
         if(p1win and xCount <= oCount) return false;
         if(p2win and oCount < xCount) return false;
-            // if(xCount == oCount) return false;
-        
-        // cout<<xCount<<" "<<oCount<<endl;
+       
         if(xCount == oCount+1 || xCount == oCount){
             return true;
         }
