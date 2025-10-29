@@ -7,7 +7,7 @@ public:
             int u = it[0], v= it[1], wt = it[2];
             adj[u].push_back({v,wt});
         }
-        priority_queue<pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> pq;
+        queue<pair<int,pair<int,int>>> pq;
        
         k += 1;
         vector<int> dist(n,1e9);
@@ -16,9 +16,9 @@ public:
         pq.push({0,{src,0}});
 
         while(!pq.empty()){
-            int node = pq.top().second.first;
-            int curDist = pq.top().second.second;
-            int stops = pq.top().first;
+            int node = pq.front().second.first;
+            int curDist = pq.front().second.second;
+            int stops = pq.front().first;
             pq.pop();
             
             for(auto it: adj[node]){
