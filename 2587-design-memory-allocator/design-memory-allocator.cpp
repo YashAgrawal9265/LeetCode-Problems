@@ -24,9 +24,9 @@ public:
             }
             if(cnt == size) break;
         }
-        if(cnt == size and st < n){
+        if(cnt == size){
             for(int i=st;i<st + size;i++){
-                if(i < n) arr[i] = mId;
+                arr[i] = mId;
             }
             mp[mId].push_back(st);
             return st;
