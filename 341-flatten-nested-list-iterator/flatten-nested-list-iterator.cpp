@@ -32,9 +32,7 @@ public:
     NestedIterator(vector<NestedInteger> &nestedList) {
         ptr = 0;
         for(int i=0;i<nestedList.size();i++){
-            vector<int> temp;
-            solve(nestedList[i],temp);
-            for(auto it: temp) arr.push_back(it);
+            solve(nestedList[i],arr);
         }
     }
     
