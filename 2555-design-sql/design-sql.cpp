@@ -1,58 +1,75 @@
-class SQL {
-private:
-    // {tableName -> {columns,rowCounter}}
-    map<string,pair<int,int>> tableMap;
-
-    // {tableName,rowId -> row detaisl}
-    map<pair<string,int>,vector<string>> rowMap;
+class Table{
 public:
-    SQL(vector<string>& names, vector<int>& columns) {
-        int n = names.size();
-        for(int i=0;i<n;i++){
-            tableMap[names[i]] = {columns[i],1};
+    int id;
+    int column;
+    map<int,vector<string>> row;
+public:
+    Table(){
+        id = 1;
+    }
+    Table(int column){
+        id = 1;
+        this->column = column;
+    }
+    bool insertRow(vector<string> arr){
+        // row.insert({id,arr});
+        // id += 1;
+        if(arr.size() != column) return false;
+        row[id++] = arr;
+        return true;
+    }
+    void deleteRow(int id){
+        row.erase(id);
+    }
+    string select(int id, int col){
+        if(row.find(id) == row.end()) return "<null>";
+        if(col - 1 < 0 || col - 1 >= row[id].size()) return "<null>";
+        return row[id][col-1];
+    }
+    vector<string> exp(){
+        vector<string> result;
+        
+        for(auto it: row){
+            string temp = "";
+            temp += to_string(it.first) + ",";
+            for(auto i: it.second){
+                temp += i +",";
+            }
+            temp.pop_back();
+            result.push_back(temp);
         }
+        return result;
+    }
+};
+class SQL {
+public:
+    map<string,Table> tables;
+    SQL(vector<string>& names, vector<int>& columns) {
+        for(int i=0;i<names.size();i++){
+            tables.insert({names[i],Table(columns[i])});
+        }
+       
     }
     
     bool ins(string name, vector<string> row) {
-        if(tableMap.find(name) == tableMap.end()) return false;
-        if(row.size() != tableMap[name].first) return false;
-        int counter = tableMap[name].second;
-        rowMap[{name,counter}] = row;
-        tableMap[name].second += 1;
-        return true;
+        if(tables.find(name) == tables.end()) return false;
+        
+        return tables[name].insertRow(row);
+        
     }
     
     void rmv(string name, int rowId) {
-        if(tableMap.find(name) == tableMap.end()) return;
-        if(rowMap.find({name,rowId}) == rowMap.end()) return;
-        rowMap.erase({name,rowId});
+        if(tables.find(name)== tables.end()) return;
+        tables[name].deleteRow(rowId);
     }
     
     string sel(string name, int rowId, int columnId) {
-        if(tableMap.find(name) == tableMap.end()) return "<null>";
-
-        if(rowMap.find({name,rowId}) == rowMap.end()) return "<null>";
-        if(columnId <= 0 || columnId - 1 >= tableMap[name].first) return "<null>";
-        string result = rowMap[{name,rowId}][columnId - 1];
-        return result;
+        if(tables.find(name)== tables.end()) return "<null>";
+        return tables[name].select(rowId,columnId);
     }
     
     vector<string> exp(string name) {
-        if(tableMap.find(name) == tableMap.end()) return {};
-        int counter = tableMap[name].second;
-        vector<string> result;
-        for(int i=1;i<counter;i++){
-            string temp = "";
-            if(rowMap.find({name,i}) != rowMap.end()){
-                temp += to_string(i) + ",";
-                for(auto it: rowMap[{name,i}]){
-                    temp += it + ",";
-                }
-                temp.pop_back();
-                result.push_back(temp);
-            }
-        }
-        return result;
+        return tables[name].exp();
     }
 };
 
