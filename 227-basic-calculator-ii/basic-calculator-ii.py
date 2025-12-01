@@ -3,7 +3,8 @@ class Solution:
 
         n = len(s)
         curNumber = 0
-        stack = []
+        lastNumber = 0
+        result = 0
         opr = '+'
 
         for i in range(n):
@@ -12,21 +13,21 @@ class Solution:
                 curNumber = curNumber*10 + int(ch)
             if(not ch.isdigit() and ch != ' ' or i == n-1):
                 if opr == '+':
-                    stack.append(curNumber)
+                    result += lastNumber
+                    lastNumber = curNumber
                 if opr == '-':
-                    stack.append(-curNumber)
+                    result += lastNumber
+                    lastNumber = -curNumber
                 if opr == '*':
-                    stack.append(stack.pop() * curNumber)
+                    lastNumber = lastNumber * curNumber
                 if opr == '/':
-                    stack.append(int(stack.pop() / curNumber))
+                    lastNumber = int(lastNumber / curNumber)
             
                 curNumber = 0
                 opr = ch
         
 
-        result = 0
-        while stack:
-            result += stack.pop()
+        result += lastNumber
         return result
 
         
