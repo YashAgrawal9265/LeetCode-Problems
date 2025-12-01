@@ -1,28 +1,32 @@
 class Solution:
-    def calculate(self, str: str) -> int:
-        n = len(str)
-        st = []
-        curNum = 0
+    def calculate(self, s: str) -> int:
+
+        n = len(s)
+        curNumber = 0
+        stack = []
         opr = '+'
 
         for i in range(n):
-            ch = str[i]
+            ch = s[i]
             if(ch.isdigit()):
-                curNum = curNum*10 + int(ch)
+                curNumber = curNumber*10 + int(ch)
             if(not ch.isdigit() and ch != ' ' or i == n-1):
-                if(opr == '+'):
-                    st.append(curNum)
-                if(opr == '-'):
-                    st.append(-curNum)
-                if(opr == '*'):
-                    st.append(st.pop() * curNum)
-                if(opr == '/'):
-                    st.append(int(st.pop() / curNum))
-                curNum = 0
+                if opr == '+':
+                    stack.append(curNumber)
+                if opr == '-':
+                    stack.append(-curNumber)
+                if opr == '*':
+                    stack.append(stack.pop() * curNumber)
+                if opr == '/':
+                    stack.append(int(stack.pop() / curNumber))
+            
+                curNumber = 0
                 opr = ch
         
+
         result = 0
-        while(st):
-            result += st.pop()
+        while stack:
+            result += stack.pop()
         return result
+
         
