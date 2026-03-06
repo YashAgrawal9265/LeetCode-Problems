@@ -6,12 +6,12 @@ public:
         unordered_map<char,int> mp;
         int result = 0;
         while(r < n){
-            mp[str[r]]++;
-            while(mp[str[r]] > 1){
-                mp[str[l]]--;
-                l++;
+            if(mp.find(str[r]) != mp.end()){
+                if(mp[str[r]] >= l)
+                    l = mp[str[r]] + 1;
             }
             result = max(result, r-l+1);
+            mp[str[r]] = r;
             r++;
         }
         return result;
