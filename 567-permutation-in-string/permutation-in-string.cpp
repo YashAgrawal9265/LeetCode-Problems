@@ -18,13 +18,13 @@ public:
             int index = s2[r] - 'a';
             s2Mp[index]++;
             if(s1Mp[index] == s2Mp[index]) matches++;
-            else if(s1Mp[index]+1 == s2Mp[index]) matches--;
+            else if(s1Mp[index]== s2Mp[index]-1) matches--;
             r++;
 
             index = s2[l] - 'a';
             s2Mp[index]--;
             if(s1Mp[index] == s2Mp[index]) matches++;
-            else if(s1Mp[index]-1 == s2Mp[index]) matches--;
+            else if(s1Mp[index]== s2Mp[index] + 1) matches--;
             l++;
         }
         return matches == 26;
