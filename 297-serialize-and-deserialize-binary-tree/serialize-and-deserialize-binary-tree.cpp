@@ -28,14 +28,11 @@ public:
     TreeNode* helper(stringstream& ss){
         string str;
         getline(ss,str,',');
-        if(str == "#"){
-            return NULL;
-        }
-        int value = stoi(str);
-        TreeNode* root = new TreeNode(value);
-        root->left = helper(ss);
-        root->right = helper(ss);
-        return root;
+        if(str == "#") return NULL;
+        TreeNode* node = new TreeNode(stoi(str));
+        node->left = helper(ss);
+        node->right = helper(ss);
+        return node;
     }
 };
 
