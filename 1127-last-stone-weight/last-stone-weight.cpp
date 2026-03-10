@@ -17,7 +17,7 @@ public:
                 first--;
                 continue;
             }
-            int j = min(first-1,second);
+            int j = first-1;
             while(j >=0 and buckets[j] == 0){
                 j--;
             }
