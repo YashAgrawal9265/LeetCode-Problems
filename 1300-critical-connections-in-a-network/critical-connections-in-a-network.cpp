@@ -15,7 +15,7 @@ private:
                 }
             }
             else if(vis[it] and it != parent){
-                low[node] = min(low[node],in[it]);
+                low[node] = min(low[node],low[it]);
             }
         }
     }
