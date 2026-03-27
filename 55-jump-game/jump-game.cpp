@@ -1,11 +1,11 @@
 class Solution {
 public:
-    bool canJump(vector<int>& nums) {
-        int n = nums.size();
-        int mxJump = 0;
+    bool canJump(vector<int>& arr) {
+        int maxi =0 , n = arr.size();
         for(int i=0;i<n;i++){
-            if(i > mxJump) return false;
-            mxJump = max(mxJump,i + nums[i]);
+            if(maxi < i) return false;
+            maxi = max(maxi, i + arr[i]);
+            
         }
         return true;
     }
