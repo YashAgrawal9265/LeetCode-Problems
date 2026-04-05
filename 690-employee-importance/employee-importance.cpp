@@ -9,27 +9,21 @@ public:
 */
 class Solution {
 public:
-    int dfs(unordered_map<int,vector<int>> adj, int node, unordered_map<int,int>& imp, unordered_map<int,int>& vis){
+    int dfs(unordered_map<int,Employee*> adj, int node, unordered_map<int,int>& vis){
         vis[node] = 1;
-        int sum = imp[node];
-        for(auto it: adj[node]){
-            if(!vis[it]) sum += dfs(adj,it,imp,vis);
+        int sum = adj[node]->importance;
+        for(auto it: adj[node]->subordinates){
+            if(!vis[it]) sum += dfs(adj,it,vis);
         }
         return sum;
     }
     int getImportance(vector<Employee*> arr, int id) {
-        unordered_map<int,vector<int>> adj;
-        unordered_map<int,int> imp;
-                
+        unordered_map<int,Employee*> adj;
+        
         for(auto it: arr){
-            int id = it->id, nodeImportance = it->importance;
-            imp[id] = nodeImportance;
-            for(auto i: it->subordinates){
-                adj[id].push_back(i);
-            }
-            
+            adj[it->id] = it;
         }
         unordered_map<int,int> vis;
-        return dfs(adj,id,imp,vis);
+        return dfs(adj,id,vis);
     }
 };
