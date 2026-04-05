@@ -1,22 +1,25 @@
 class Vector2D {
 public:
-    vector<int> arr;
-    int i;
-    int size = 0;
+    vector<vector<int>> arr;
+    int i = 0;
+    int j = 0;
     Vector2D(vector<vector<int>>& vec) {
-        for(auto it: vec){
-            for(auto i: it) arr.push_back(i);
-        }
-        i = 0;
-        size = arr.size();
+        arr = vec;
     }
-    
+    void solve(){
+        while(i < arr.size() and j == arr[i].size()){
+            i++;
+            j = 0;
+        }
+    }
     int next() {
-        return arr[i++];
+        if(!hasNext()) return -1;
+        return arr[i][j++];
     }
     
     bool hasNext() {
-        return i < size;
+        solve();
+        return i < arr.size();
     }
 };
 
