@@ -1,21 +1,26 @@
 class Solution {
 public:
-    bool solve(string s1, string s2, string s3, int i, int j, int m, int n, vector<vector<int>>& dp){
-        if(i == m and j == n) return true;
-        bool flag1 = false, flag2 = false;
+    int dp[105][105];
+    bool solve(string s1, string s2, string s3, int i, int j){
+        if(i+j == s3.size()) return 1;
+
         if(dp[i][j] != -1) return dp[i][j];
-        if(i < m and s1[i] == s3[i+j]){
-            flag1 = solve(s1,s2,s3,i+1,j,m,n,dp);
+        if(i < s1.size() and j < s2.size() and s1[i] == s3[i+j] and s3[i+j] == s2[j]){
+            bool op1 = solve(s1,s2,s3,i+1,j);
+            bool op2 = solve(s1,s2,s3,i,j+1);
+            return dp[i][j] = op1 or op2;
         }
-        if(j < n and s2[j] == s3[i+j]){
-            flag2 = solve(s1,s2,s3,i,j+1,m,n,dp);
+        else if(i < s1.size() and s1[i] == s3[i+j]){
+            return dp[i][j] = solve(s1,s2,s3,i+1,j);
         }
-        return dp[i][j] = flag1 or flag2;
+        else if(j < s2.size() and s2[j] == s3[i+j]){
+            return dp[i][j] = solve(s1,s2,s3,i,j+1);
+        }
+        return dp[i][j] = false;
     }
     bool isInterleave(string s1, string s2, string s3) {
-        int m = s1.size(), n = s2.size();
-        if(m + n != s3.size()) return false;
-        vector<vector<int>> dp(m+1,vector<int>(n+1,-1));
-        return solve(s1,s2,s3,0,0,m,n,dp);
+        if(s1.size() + s2.size() != s3.size()) return false;
+        memset(dp,-1,sizeof(dp));
+        return solve(s1,s2,s3,0,0);
     }
 };
