@@ -40,18 +40,11 @@ public:
 
 class Solution {
 public:
-    bool isSame(vector<vector<int>>& grid, int n, int r, int c){
-        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
-                if(grid[r][c] != grid[r+i][c+j]){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
     Node* solve(vector<vector<int>>& grid, int n, int row, int col){
-        if(isSame(grid,n,row,col)){
+        // if(isSame(grid,n,row,col)){
+        //     return new Node(grid[row][col],true);
+        // }
+        if(n == 1){
             return new Node(grid[row][col],true);
         }
         int mid = n / 2;
@@ -59,7 +52,13 @@ public:
         Node* topRight = solve(grid,mid,row,col + mid);
         Node* bottomLeft = solve(grid,mid,row+mid,col);
         Node* bottomRight = solve(grid,mid,row+mid,col+mid);
+
+        if(topLeft->isLeaf and topRight->isLeaf and bottomLeft->isLeaf and bottomRight->isLeaf and topLeft->val == topRight->val and topLeft->val == bottomLeft->val and topLeft->val == bottomRight->val){
+            return new Node(grid[row][col],true);
+        }
+
         return new Node(grid[row][col],false,topLeft,topRight,bottomLeft,bottomRight);
+
     }
     Node* construct(vector<vector<int>>& grid) {
         int n = grid.size();
